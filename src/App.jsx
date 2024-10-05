@@ -3,18 +3,18 @@ import './App.css';
 
 function App() {
   const btnSend = useRef();
-  const [messages, setmessages] = useState([]);
   /**
-   * @typedef {[]}
+   * @type {[messages:Array<{ms:string, from:"me" | "server"}>, setmessages:Function]} state
    */
-  const [sc, setSc] = useState();
+  const [messages, setmessages] = useState([]);
+  const [socket, setSocket] = useState();
   useEffect(() => {
     const socket = new WebSocket(
       process.env.NODE_ENV == 'development' ? 'ws://localhost:5000/ws' : '/ws'
     );
     socket.addEventListener('message', (ev) => {
       console.log(ev.data);
-      setmessages((prev) => [...prev, ev.data]);
+      setmessages((prev) => [...prev, { ms: ev.data, from: 'server' }]);
     });
     socket.addEventListener('open', (ev) => {
       console.log(ev);
@@ -25,7 +25,7 @@ function App() {
     socket.addEventListener('error', (ev) => {
       console.log(ev);
     });
-    setSc(socket);
+    setSocket(socket);
     return () => {
       socket.close();
       setmessages(() => []);
@@ -33,11 +33,10 @@ function App() {
   }, []);
   function onSubmit(e) {
     e.preventDefault();
-    console.log(e);
     const formData = new FormData(e.target);
     const f = Object.fromEntries(formData);
-    console.log(f);
-    sc.send(f.message);
+    setmessages([...messages, { ms: f.message, from: 'me' }]);
+    socket.send(f.message);
   }
   return (
     <>
@@ -46,9 +45,20 @@ function App() {
         Pulse
       </h1>
       <p>A chat app.</p>
-      <div className="room">
+      <div className="room" style={{ maxWidth: '30rem' }}>
         {messages.map((ms, ind) => (
-          <pre key={ind}>{ms}</pre>
+          <pre
+            style={{
+              backgroundColor: 'lightblue',
+              padding: '3px',
+              marginLeft: ms.from == 'me' ? '' : 'auto',
+              width:"fit-content",
+              minWidth:"15rem"
+            }}
+            key={ind}
+          >
+            {ms.ms}
+          </pre>
         ))}
       </div>
       <form onSubmit={onSubmit}>
