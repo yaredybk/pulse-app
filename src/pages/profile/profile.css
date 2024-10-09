@@ -1,0 +1,21 @@
+.page.profile {
+  & .user {
+    img {
+      float: left;
+      padding-right: 1rem;
+    }
+    .name{
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+    div {
+      padding-block: 3px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+  }
+  .logout{
+    float: right;
+  }
+}

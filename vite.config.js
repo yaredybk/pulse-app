@@ -12,7 +12,19 @@ export default defineConfig({
   server: {
     port: 5001,
     proxy: {
-      '^/(api|ws)/.*': {
+      '/api': {
+        changeOrigin: true,
+        target: 'http://localhost:5000',
+      },
+      '/ws': {
+        changeOrigin: true,
+        target: 'http://localhost:5000',
+      },
+      '/login': {
+        changeOrigin: true,
+        target: 'http://localhost:5000',
+      },
+      '/logout': {
         changeOrigin: true,
         target: 'http://localhost:5000',
       },

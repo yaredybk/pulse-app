@@ -1,0 +1,13 @@
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  & nav {
+    display: flex;
+    align-items: center;
+    & > * {
+      background-color: rgba(128, 128, 128, 0.4);
+      padding: 4px 0.5rem;
+    }
+  }
+}

@@ -1,84 +1,34 @@
-import { useEffect, useRef, useState } from 'react';
 import './App.css';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import HomePage from './pages/home/HomePage';
+import ProfilePage from './pages/profile/ProfilePage';
+import { _getMe } from './utils/utils';
+import { useEffect } from 'react';
 
 function App() {
-  const btnSend = useRef();
-  /**
-   * @type {[messages:Array<{ms:string, from:"me" | "server"}>, setmessages:Function]} state
-   */
-  const [messages, setmessages] = useState([]);
-  const [socket, setSocket] = useState();
+  const routesList = [{ path: '/profile*', element: ProfilePage }];
+  const { pathname } = useLocation();
   useEffect(() => {
-    const socket = new WebSocket(
-      process.env.NODE_ENV == 'development' ? 'ws://localhost:5000/ws' : '/ws'
-    );
-    socket.addEventListener('message', (ev) => {
-      console.log(ev.data);
-      setmessages((prev) => [...prev, { ms: ev.data, from: 'server' }]);
+    _getMe().then((u) => {
+      if (!u && window.location.pathname != '/a/profile/me')
+        window.location.assign('/a/profile/me');
     });
-    socket.addEventListener('open', (ev) => {
-      console.log(ev);
-    });
-    socket.addEventListener('close', (ev) => {
-      console.log(ev);
-    });
-    socket.addEventListener('error', (ev) => {
-      console.log(ev);
-    });
-    setSocket(socket);
-    return () => {
-      socket.close();
-      setmessages(() => []);
-    };
   }, []);
-  function onSubmit(e) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const f = Object.fromEntries(formData);
-    setmessages([...messages, { ms: f.message, from: 'me' }]);
-    socket.send(f.message);
-  }
+
   return (
     <>
-      <h1>
-        <img height="40" src="/public/favicon_bg.png" alt="" />
-        Pulse
-      </h1>
-      <p>A chat app.</p>
-      <div className="room" style={{ maxWidth: '30rem' }}>
-        {messages.map((ms, ind) => (
-          <pre
-            style={{
-              backgroundColor: 'lightblue',
-              padding: '3px',
-              marginLeft: ms.from == 'me' ? '' : 'auto',
-              width:"fit-content",
-              minWidth:"15rem"
-            }}
-            key={ind}
-          >
-            {ms.ms}
-          </pre>
+      <Routes>
+        <Route index element={<HomePage />}></Route>
+        {routesList.map((r) => (
+          <Route key={r.path} path={r.path} element={<r.element />}></Route>
         ))}
-      </div>
-      <form onSubmit={onSubmit}>
-        <input
-          type="text"
-          maxLength={15}
-          onKeyDown={(e) => {
-            if (e.shiftKey && e.code.toLowerCase() == 'enter') {
-              e.preventDefault();
-              btnSend.current.click();
-            }
-          }}
-          name="message"
-          id="message"
-          placeholder="type here"
-        ></input>
-        <button ref={btnSend} type="submit">
-          send
-        </button>
-      </form>
+      </Routes>
+      <br />
+      {!pathname.match(/^\/$/) && (
+        <Link className="btn hero" to="/">
+          Chat
+        </Link>
+      )}
     </>
   );
 }
