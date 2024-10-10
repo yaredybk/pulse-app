@@ -28,6 +28,10 @@ export default defineConfig({
         changeOrigin: true,
         target: 'http://localhost:5000',
       },
+      '/callback': {
+        changeOrigin: true,
+        target: 'http://localhost:5000',
+      },
     },
   },
 });

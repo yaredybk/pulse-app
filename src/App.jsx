@@ -2,18 +2,13 @@ import './App.css';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import HomePage from './pages/home/HomePage';
 import ProfilePage from './pages/profile/ProfilePage';
-import { _getMe } from './utils/utils';
-import { useEffect } from 'react';
+import { useContext } from 'react';
+import { User } from './context/user_context';
 
 function App() {
-  const routesList = [{ path: '/profile*', element: ProfilePage }];
+  const routesList = [{ path: '/profile/*', element: ProfilePage }];
   const { pathname } = useLocation();
-  useEffect(() => {
-    _getMe().then((u) => {
-      if (!u && window.location.pathname != '/a/profile/me')
-        window.location.assign('/a/profile/me');
-    });
-  }, []);
+  const user = useContext(User);
 
   return (
     <>
@@ -24,7 +19,7 @@ function App() {
         ))}
       </Routes>
       <br />
-      {!pathname.match(/^\/$/) && (
+      {user.name && !pathname.match(/^\/$/) && (
         <Link className="btn hero" to="/">
           Chat
         </Link>

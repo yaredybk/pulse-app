@@ -2,7 +2,12 @@
   & .user {
     img {
       float: left;
-      padding-right: 1rem;
+      margin-right: 1rem;
+      height: 6rem;
+      max-width: 6rem;
+      object-fit: contain;
+      width: auto;
+      box-shadow: 0 5px 5px black;
     }
     .name{
       font-size: 1.3rem;

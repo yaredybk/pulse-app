@@ -1,37 +1,40 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './profile.css';
 import Header from '../../layout/header/Header';
-import { _getMe } from '../../utils/utils';
+import { User } from '../../context/user_context';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 export default function ProfilePage() {
-  const [userInfo, setUserInfo] = useState({});
-  async function getMe() {
-    let me = await _getMe();
-    if (me) return setUserInfo(me.user || me);
-    setUserInfo();
-  }
+  const userInfo = useContext(User);
   useEffect(() => {
-    getMe();
+    // if(params)
+
+    const url = new URLSearchParams(window.location.search);
+    if (url.get('callback') == 'login') {
+      fetch('/api/info/me?callback=login')
+        .then((r) => (r.ok ? r.json() : Promise.reject('authentication error')))
+        .then((r) => {
+          userInfo.setUser({ ...userInfo, ...r.user });
+        })
+        .catch(console.warn);
+    }
+    return () => {};
   }, []);
 
   return (
     <main className="page profile">
       <Header />
-      {!userInfo && (
+      {userInfo.isLoading && <span>loading</span>}
+      {!userInfo.isLoading && !userInfo.name && (
         <div>
-          <b className="warn">USER ERROR</b>
-          <a href="/logout" className="btn warn logout">
-            logout
-          </a>
+          <h2 className="warn">Login/Signup to get access</h2>
           <br />
-          <br />
-          <a href="/login" className="btn hero login">
+          <a href="/api/login" className="btn hero login">
             login
           </a>
         </div>
       )}
-      {userInfo &&
-        (userInfo.name ? <UserDetailes {...userInfo} /> : <>Loading</>)}
+      {userInfo.name && <UserDetailes {...userInfo} />}
       <br />
     </main>
   );
