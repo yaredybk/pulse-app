@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import Header from '../../layout/header/Header';
-import Login from '../../auth/Login';
 
 export default function HomePage() {
   const btnSend = useRef();
