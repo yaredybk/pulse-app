@@ -5,3 +5,6 @@ h1.header {
   gap: 5px;
   border-bottom: solid gray 2px;
 }
+nav.nav1{
+  background-color: rgba(255, 166, 0, 0.4);
+}

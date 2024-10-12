@@ -51,7 +51,7 @@ function UserDetailes(params) {
       </div>
       <div>{params.sub}</div>
       <br />
-      <a href="/logout" className="btn warn logout">
+      <a href="/api/logout" className="btn warn logout">
         logout
       </a>
     </div>

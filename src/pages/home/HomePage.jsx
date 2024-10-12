@@ -9,9 +9,10 @@ export default function HomePage() {
   const [messages, setmessages] = useState([]);
   const [socket, setSocket] = useState();
   useEffect(() => {
-    const socket = new WebSocket(
-      process.env.NODE_ENV == 'development' ? 'ws://localhost:5000/ws' : '/ws'
-    );
+    let wsLink = '/ws';
+    if (process.env.NODE_ENV == 'development')
+      wsLink = 'ws://' + new URL(window.location).hostname + ':5000/ws';
+    const socket = new WebSocket(wsLink);
     socket.addEventListener('message', (ev) => {
       console.log(ev.data);
       setmessages((prev) => [...prev, { ms: ev.data, from: 'server' }]);

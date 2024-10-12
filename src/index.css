@@ -25,3 +25,43 @@ button {
     color: darkred;
   }
 }
+body{
+  margin: 0px;
+  padding: 0px;
+}
+#root{
+  display: grid;
+  min-block-size: 100vh;
+  min-block-size: 100dvh;
+  grid-template-columns: 3rem 10rem 1fr;
+  grid-template-rows: min-content 1fr min-content;
+  grid-template-areas: 
+  'logo header1 header2'
+  'nav1 nav2 main'
+  'toggle footer1 footer2';
+  & a.logo{
+    grid-area: logo;
+    overflow: hidden;
+  }
+  & header1{
+    grid-area: header1;
+  }
+  & header2{
+    grid-area: header2;
+  }
+  & nav ul{
+    list-style: none;
+    margin: 0px;
+    overflow: hidden;
+    padding: 3px;
+  }
+  & nav.nav1{
+    grid-area: nav1;
+  }
+  & nav.nav2{
+    grid-area: nav2;
+  }
+  & main{
+    grid-area: main;
+  }
+}
