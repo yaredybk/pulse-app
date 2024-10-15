@@ -4,7 +4,7 @@ import ListNav2 from '../components/ListNav2';
 export default function Nav2() {
   const { title, category, uuid } = useParams();
   if (!title) {
-    return <b>...</b>;
+    return <header> . . . </header>;
   }
   return (
     <nav className="nav2">

@@ -81,15 +81,12 @@ body {
       'nav1 nav2 main'
       'toggle nav2 footer';
   }
-  & a.logo {
-    grid-area: logo;
-    overflow: hidden;
-  }
 }
-.log {
-  background-color: red;
+a.logo {
+  display: flex;
+  place-self: center;
 }
-header{
+header {
   border-bottom: 1px gray solid;
   margin-bottom: -1px;
 }
@@ -153,10 +150,15 @@ main {
     'nav1 nav2 main'
     'toggle nav2 main'; */
     grid-template-areas:
-      'logo header2 header2'
+      'header2 header2 header2'
       'main main main'
       'footer footer footer';
     nav,
+    .logo,
+    .isoffline,
+    .isonline,
+    .nav1,
+    .nav2,
     .header1 {
       display: none;
     }

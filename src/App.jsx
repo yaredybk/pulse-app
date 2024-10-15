@@ -24,7 +24,7 @@ function App() {
       {/* header2 */}
       <Routes>
         <Route path=":title/:category/:uuid/*" element={<Header2 />} />
-        <Route path="/" element={<header> ----</header>} />
+        <Route path="/" element={null} />
         <Route path="/*" element={<Header2 />} />
       </Routes>
       <Nav1 />
