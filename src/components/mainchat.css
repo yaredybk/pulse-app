@@ -1,0 +1,54 @@
+.main.chat {
+  padding: 5px;
+  margin: 0px;
+  margin-bottom: 0.2rem;
+  display: flex;
+  align-items: stretch;
+  gap: 5px;
+  overflow-y: auto;
+  & div.pre {
+    position: relative;
+    & pre{
+      display: inline-block;
+      white-space: pre-wrap;
+      word-break: break-all;
+      border-radius: 5px;
+      margin: 0;
+      padding: 0.3rem 0.5rem;
+    }
+    img.profile.small {
+      margin-right: 1rem;
+      position: absolute;
+      left: -2rem;
+    }
+  }
+  div.pre.me {
+    margin-inline: 0rem 5rem;
+    align-self: flex-start;
+    background-color: var(--orange1);
+  }
+  div.pre.you {
+    margin-inline: 5rem 0rem;
+    align-self: flex-end;
+    background-color: var(--orange2);
+  }
+}
+.main.input {
+  grid-area: footer;
+  /* width: 100%; */
+  margin-top: auto;
+  box-sizing: border-box;
+  padding-inline: 5px;
+  display: grid;
+  grid-template-columns: 1fr min-content;
+  gap: 5px;
+  bottom: 3px;
+  & textarea {
+    /* padding: 5px; */
+    box-sizing: border-box;
+  }
+  & button{
+    background-color: var(--orange4);
+    border: none;
+  }
+}

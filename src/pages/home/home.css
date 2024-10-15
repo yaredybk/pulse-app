@@ -1,0 +1,25 @@
+#root div.main.home {
+  /* position: relative; */
+  background-color: rgba(255, 255, 255, 0.5);
+  background-image: url('/a/favicon_bg.png');
+  background-size: contain;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-blend-mode: lighten;
+  grid-area: main;
+  grid-column-start: 2;
+  grid-column-end: -1;
+  img {
+    height: 2.2rem;
+    vertical-align: text-bottom;
+    padding-inline: 1rem;
+  }
+  article {
+    text-align: left;
+    padding: 1rem;
+    font-size: larger;
+    font-weight: bold;
+    font-style: italic;
+  }
+}

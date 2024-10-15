@@ -1,16 +1,39 @@
 :root {
-  --color-hero: orange;
+  --orange1: rgba(255, 204, 108, 0.5);
+  --orange2: rgba(255, 189, 65, 0.75);
+  --orange3: rgb(255, 165, 0);
+  --orange4: rgb(255, 130, 0);
+  --orange5: rgb(255, 100, 0);
+  --orange6: rgb(255, 50, 0);
+  --color-hero: rgb(255, 136, 0);
   --color-hero-dark: darkorange;
   --color-hero-black: rgb(107, 59, 0);
+  --nav1-width: minmax(3rem, 8vw);
+  --nav2-width: minmax(10rem, 30vw);
+  --header-height: 2.5rem;
+}
+* {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+    'Lucida Sans', Arial, sans-serif;
+  caret: var(--orange3);
+  caret-shape: bar;
+  accent-color: var(--orange3);
+  box-sizing: border-box;
 }
 button {
   cursor: pointer;
+}
+a {
+  text-decoration: none;
 }
 .btn {
   border: none;
   padding: 5px 2rem;
   border-radius: 0.5rem;
   &.hero {
+    font-size: 110%;
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--color-hero);
     outline: solid 1px var(--color-hero-black);
     &:hover {
@@ -25,43 +48,121 @@ button {
     color: darkred;
   }
 }
-body{
+body {
   margin: 0px;
   padding: 0px;
 }
-#root{
+#root {
   display: grid;
-  min-block-size: 100vh;
-  min-block-size: 100dvh;
-  grid-template-columns: 3rem 10rem 1fr;
-  grid-template-rows: min-content 1fr min-content;
-  grid-template-areas: 
-  'logo header1 header2'
-  'nav1 nav2 main'
-  'toggle footer1 footer2';
-  & a.logo{
+  block-size: 100vh;
+  block-size: 100dvh;
+  block-size: 100svh;
+  grid-template-columns: var(--nav1-width) var(--nav2-width) 1fr;
+  grid-template-rows: var(--header-height) 1fr var(--header-height);
+  /* original areas */
+  /* 'logo header1 header2'
+    'nav1 nav2 main'
+    'toggle nav2 main'; */
+  /* for browsers with NO :has support */
+  grid-template-areas:
+    'logo header1 header2'
+    'nav1 nav2 main'
+    'toggle footer footer';
+  /* for browsers with :has support */
+  &:has(:not(main)) {
+    grid-template-areas:
+      'logo header1 header2'
+      'nav1 nav2 main'
+      'toggle nav2 main';
+  }
+  &:has(main) {
+    grid-template-areas:
+      'logo header1 header2'
+      'nav1 nav2 main'
+      'toggle nav2 footer';
+  }
+  & a.logo {
     grid-area: logo;
     overflow: hidden;
   }
-  & header1{
-    grid-area: header1;
+}
+.log {
+  background-color: red;
+}
+header{
+  border-bottom: 1px gray solid;
+  margin-bottom: -1px;
+}
+.header1 {
+  grid-area: header1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 5px;
+  /* background-color: var(--orange3); */
+  & > * {
+    background-color: var(--orange2);
+    flex-grow: 1;
+    text-align: center;
+    place-content: center;
+    &.active {
+      background-color: var(--orange4);
+    }
   }
-  & header2{
-    grid-area: header2;
+}
+.header2 {
+  grid-area: header2;
+}
+nav ul {
+  list-style: none;
+  margin: 0px;
+  overflow: hidden;
+  padding: 3px;
+}
+nav.nav1 {
+  grid-area: nav1;
+  /* background-color: var(--orange2); */
+  ul {
+    display: grid;
+    padding: 0;
+    gap: 5px;
+    & a {
+      padding: 8px 5px;
+      display: block;
+      & .active {
+        background-color: var(--orange4);
+      }
+    }
   }
-  & nav ul{
-    list-style: none;
-    margin: 0px;
-    overflow: hidden;
-    padding: 3px;
+}
+nav.nav2 {
+  grid-area: nav2;
+  border-right: gray solid 1px;
+  background-color: var(--orange1);
+  display: grid;
+  align-content: start;
+  overflow: auto hidden;
+}
+main {
+  grid-area: main;
+}
+@media screen and (max-width: 800px) {
+  #root:has(main) {
+    /* 'logo header1 header2'
+    'nav1 nav2 main'
+    'toggle nav2 main'; */
+    grid-template-areas:
+      'logo header2 header2'
+      'main main main'
+      'footer footer footer';
+    nav,
+    .header1 {
+      display: none;
+    }
   }
-  & nav.nav1{
-    grid-area: nav1;
-  }
-  & nav.nav2{
-    grid-area: nav2;
-  }
-  & main{
-    grid-area: main;
-  }
+}
+main.chat {
+  display: flex;
+  flex-direction: column;
 }

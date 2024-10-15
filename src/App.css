@@ -1,3 +1,9 @@
+a.logo {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  font-size: 1.3rem;
+}
 h1.header {
   font-size: 1.5rem;
   display: flex;
@@ -5,6 +11,38 @@ h1.header {
   gap: 5px;
   border-bottom: solid gray 2px;
 }
-nav.nav1{
-  background-color: rgba(255, 166, 0, 0.4);
+.text_block {
+  display: inline-block;
+  white-space: pre-wrap;
+  word-break: break-all;
+  border-radius: 5px;
+  margin: 0;
+  padding: 0.3rem 0.5rem;
+}
+.active {
+  background-color: var(--orange4);
+}
+.warning {
+  background-color: rgb(255, 134, 134);
+  border: solid 2px red;
+  padding: 5px 1rem;
+  color: darkred;
+}
+.isoffline,
+.isonline {
+  grid-area: toggle;
+  position: relative;
+  span {
+    height: 1rem;
+    width: 1rem;
+    position: absolute;
+    /* bottom: 1rem; */
+    left: 1rem;
+  }
+}
+.isonline {
+  background-image: linear-gradient(to right, limegreen, transparent);
+}
+.isoffline {
+  background-image: linear-gradient(to right, red, transparent);
 }

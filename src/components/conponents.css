@@ -1,0 +1,66 @@
+.card.contact {
+  padding: 5px;
+  margin-bottom: 0.2rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  img {
+    height: 2rem;
+    width: 2rem;
+    object-fit: cover;
+    border-radius: 35%;
+  }
+  border-bottom: gray solid 1px;
+  &:last-child {
+    border-bottom: none;
+  }
+  &.active {
+    background-color: var(--orange3);
+  }
+}
+.main.contact {
+  padding: 5px;
+  margin-bottom: 0.2rem;
+  display: grid;
+  align-items: start;
+  gap: 5px;
+  height: fit-content;
+  width: fit-content;
+  img {
+    width: min(100%, 15rem);
+    margin-inline: auto;
+    object-fit: cover;
+    border-radius: 5%;
+  }
+  span {
+    background-color: rgba(128, 128, 128, 0.5);
+    padding: 0.5rem;
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+  }
+}
+/* main.chat moved to mainchat.css */
+.detailes.user {
+  padding: 5px;
+  padding-block: 3px;
+  display: block;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  img {
+    float: left;
+    margin-right: 1rem;
+    height: 6rem;
+    max-width: 6rem;
+    object-fit: contain;
+    width: auto;
+    box-shadow: 0 5px 5px black;
+  }
+  .name {
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+}
+.logout {
+  float: right;
+}

@@ -1,8 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import './profile.css';
-import Header from '../../layout/header/Header';
-import { User } from '../../context/user_context';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { User } from '../../context/context';
+import UserDetailes from '../../components/userDetails';
 
 export default function ProfilePage() {
   const userInfo = useContext(User);
@@ -22,8 +21,7 @@ export default function ProfilePage() {
   }, []);
 
   return (
-    <main className="page profile">
-      <Header />
+    <main className="main profile">
       {userInfo.isLoading && <span>loading</span>}
       {!userInfo.isLoading && !userInfo.name && (
         <div>
@@ -36,24 +34,19 @@ export default function ProfilePage() {
       )}
       {userInfo.name && <UserDetailes {...userInfo} />}
       <br />
+      {process.env.NODE_ENV == 'development' && (
+        <>
+          <a href="/api/login" className="btn hero login">
+            login
+          </a>
+          <button
+            onClick={() => fetch('/api/protected')}
+            className="btn hero login"
+          >
+            refetch
+          </button>
+        </>
+      )}
     </main>
-  );
-}
-
-function UserDetailes(params) {
-  return (
-    <div className="user">
-      {params.picture && <img src={params.picture} alt="profile" />}
-      <div className="name">{params.name}</div>
-      <div>
-        <div className="material-symbols-outlined">mail</div>
-        {params.email}
-      </div>
-      <div>{params.sub}</div>
-      <br />
-      <a href="/api/logout" className="btn warn logout">
-        logout
-      </a>
-    </div>
   );
 }
