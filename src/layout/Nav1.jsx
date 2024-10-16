@@ -10,7 +10,7 @@ export default function Nav1() {
     { title: 'more_horiz', to: '/me' },
   ];
   return (
-    <nav className="nav1">
+    <nav className="nav1 bg_logo">
       <ul>
         <li>
           <Link
@@ -28,7 +28,7 @@ export default function Nav1() {
           <li key={ind + title}>
             <Link
               className={
-                pathname.startsWith('/' + title)
+                pathname.startsWith('/' + title.replace(/s$/, ''))
                   ? 'active material-symbols-outlined'
                   : 'material-symbols-outlined'
               }

@@ -1,12 +1,5 @@
 #root div.main.home {
   /* position: relative; */
-  background-color: rgba(255, 255, 255, 0.5);
-  background-image: url('/a/favicon_bg.png');
-  background-size: contain;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-blend-mode: lighten;
   grid-area: main;
   grid-column-start: 2;
   grid-column-end: -1;
@@ -22,4 +15,14 @@
     font-weight: bold;
     font-style: italic;
   }
+}
+.bg_logo,
+body {
+  background-color: rgba(255, 255, 255, 0.5);
+  background-image: url('/a/favicon_bg.png');
+  background-size: contain;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-blend-mode: lighten;
 }

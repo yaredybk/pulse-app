@@ -26,6 +26,7 @@ export default function ExitBtnMain() {
         display: 'block',
         backgroundColor: 'red',
         border: 'none',
+        zIndex:1
       }}
       className="material-symbols-outlined"
     >

@@ -4,7 +4,7 @@ import { Sync, User } from '../context/context';
 
 export default function ListNav2({ title, category, active }) {
   const synContext = useContext(Sync);
-  const { uuid } = useContext(User);
+  const { uuid, isLoading } = useContext(User);
   const [navlist, setNavlist] = useState([]);
   async function getListNav(title_, category_) {
     if (['chat', 'contact', 'search'].find((a) => a == title_)) {
@@ -21,9 +21,10 @@ export default function ListNav2({ title, category, active }) {
     }
   }
   useEffect(() => {
-    title && category ? getListNav(title, category) : setNavlist([]);
+    if (!isLoading)
+      title && category ? getListNav(title, category) : setNavlist([]);
     return () => {};
-  }, [title, category]);
+  }, [title, category, isLoading]);
   const getUpdates = ({
     data,
     touuid,
@@ -31,24 +32,11 @@ export default function ListNav2({ title, category, active }) {
     type,
     category: categoryin,
   }) => {
-    console.log({
-      data,
-      touuid,
-      fromuuid,
-      type,
-      categoryin,
-    });
-    console.log({ title, category });
-
     if (type != title || category != categoryin)
       return console.warn('nav missmatch', type, category);
-
-    const ind = navlist.findIndex((n) => fromuuid == n.uuid);
-    if (ind == -1)
-      setNavlist((p) => [
-        { ...data, uuid: fromuuid != uuid ? fromuuid : touuid },
-        ...p,
-      ]);
+    const uuid_ = fromuuid == uuid ? touuid : fromuuid;
+    const ind = navlist.findIndex((n) => uuid_ == n.uuid);
+    if (ind == -1) setNavlist((p) => [{ uuid: uuid_ }, ...p]);
     else {
       setNavlist((p) => [
         navlist[ind],

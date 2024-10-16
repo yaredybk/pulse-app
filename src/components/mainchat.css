@@ -4,8 +4,10 @@
   margin-bottom: 0.2rem;
   display: flex;
   align-items: stretch;
+  flex-direction: column;
   gap: 5px;
   overflow-y: auto;
+
   & div.pre {
     position: relative;
     & pre{
@@ -44,9 +46,7 @@
   bottom: 3px;
   margin: 0.2rem;
   & textarea {
-    padding-inline: 1rem;
-    padding-block: 0.5rem;
-    /* padding: 5px; */
+    padding: 0.5rem;
     box-sizing: border-box;
   }
   & button{

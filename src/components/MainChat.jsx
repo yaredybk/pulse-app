@@ -53,8 +53,8 @@ export default function MainChat({ user: userin }) {
     }
   }
   useEffect(() => {
-    getMessages();
-  }, []);
+    if (!me.isLoading) getMessages();
+  }, [me.isLoading]);
   useEffect(() => {
     _sw.messageMain.update && getUpdates(_sw.messageMain);
   }, [_sw.messageMain.update]);
@@ -75,13 +75,13 @@ export default function MainChat({ user: userin }) {
       setText('');
     } else {
       console.warn('_sw.syncSend failed');
-      // console.log(_sw.send);
     }
   }
   return (
     <>
       <main className="main chat">
-        <b>your chat with {user.name}</b>
+        
+        <i style={{marginTop:'auto'}}>your chat with {user.name}</i>
         {messages.map((ms, ind) => (
           <div
             className={me.uuid == ms.uuid ? 'pre me' : 'pre you ' + ms.uuid}

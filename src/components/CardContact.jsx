@@ -17,10 +17,9 @@ export default function CardContact({
   if (state?.user && !user.name) user = state.user;
   const [user3, setUser3] = useState({});
   useEffect(() => {
-    if (!user.name)
+    if (!user.name || !user.profile)
       fetch(`/api/info/${type}/${user.uuid}`)
         .then((r) => {
-          console.log(r);
           if (!r?.ok) console.warn('no data');
           else
             r.json().then((d) => {
@@ -32,27 +31,18 @@ export default function CardContact({
 
     return () => {};
   }, [user.uuid]);
-  if (!user.name)
+  const user_ = user.name ? user:user3;
     return (
       <Link
-        to={to + user3.uuid}
-        state={{ user: user3 }}
+        to={to + user_.uuid}
+        state={{ user: user_ }}
         className={
-          active == user3.uuid ? `card contact active` : `card contact`
+          active == user_.uuid ? `card contact active` : `card contact`
         }
       >
-        <img src={user3.profile} alt="" />
-        <span>{user3.name}</span>
+        <img src={user_.profile} alt="" />
+        <span>{user_.name || user_.uuid}</span>
+        <span className={user_.active? 'userisonline':'userisoffline'}></span>
       </Link>
     );
-  return (
-    <Link
-      to={to + user.uuid}
-      state={{ user }}
-      className={active == user.uuid ? `card contact active` : `card contact`}
-    >
-      <img src={user.profile} alt="" />
-      <span>{user.name}</span>
-    </Link>
-  );
 }

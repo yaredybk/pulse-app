@@ -15,7 +15,7 @@ export default function SyncProvider(props) {
     // if (typeof e.data !== 'string') return console.warn('data not a string');
     let d = e.data;
     if (!(d.startsWith('{') || d.startsWith('[')))
-      return console.warn('message\n', d);
+      return console.warn(d);
     let { data, path } = JSON.parse(d);
     if (!(path && data)) return console.warn('no path or data');
     let pathes = path.replace(/^\//, '').split('/');
@@ -85,7 +85,7 @@ export default function SyncProvider(props) {
   }
   useEffect(() => {
     function onVisibilityChange() {
-      console.warn('onVisibilityChange', document.hidden);
+      // console.warn('onVisibilityChange', document.hidden);
       if (document.hidden) {
         __document_hidden__ = true;
         if (ws.current) {

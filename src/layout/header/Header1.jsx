@@ -13,7 +13,7 @@ export default function Header1() {
     search: [{ title: 'chat' }, { title: 'group' }, { title: 'public' }],
   }[title_];
 
-  if (!category) return <header></header>;
+  if (!category) return <header className="header1"></header>;
   return (
     <header className="header1">
       {category.map(({ title: c_ }) => (

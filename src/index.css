@@ -11,7 +11,7 @@
   --nav1-width: minmax(3rem, 8vw);
   --nav2-width: minmax(10rem, 30vw);
   --header-height: 2.5rem;
-  --footer-height: 3rem;
+  --footer-height: 2.5rem;
 }
 * {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
@@ -82,6 +82,12 @@ body {
       'nav1 nav2 main'
       'toggle nav2 footer';
   }
+  &:has(main.nofooter) {
+    grid-template-areas:
+      'logo header1 header2'
+      'nav1 nav2 main'
+      'toggle nav2 main';
+  }
 }
 a.logo {
   display: flex;
@@ -100,7 +106,7 @@ header {
   gap: 5px;
   /* background-color: var(--orange3); */
   & > * {
-    background-color: var(--orange2);
+    background-color: var(--orange1);
     flex-grow: 1;
     text-align: center;
     place-content: center;
@@ -112,6 +118,12 @@ header {
 .header2 {
   grid-area: header2;
 }
+.header2.wide {
+  grid-column-start: 2;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 nav ul {
   list-style: none;
   margin: 0px;
@@ -119,43 +131,66 @@ nav ul {
   padding: 3px;
 }
 nav.nav1 {
+  border-right: 1px gray solid;
+  overflow: hidden auto;
   grid-area: nav1;
   /* background-color: var(--orange2); */
   ul {
-    display: grid;
     padding: 0;
-    gap: 5px;
     & a {
-      padding: 8px 5px;
+      padding: 1rem 5px;
       display: block;
       & .active {
         background-color: var(--orange4);
       }
     }
+    & > * {
+      border-bottom: gray solid 1px;
+      }
   }
 }
 nav.nav2 {
+  position: relative;
   grid-area: nav2;
   border-right: gray solid 1px;
   background-color: var(--orange1);
   display: grid;
   align-content: start;
-  overflow: auto hidden;
+  overflow: hidden auto;
+  & > * {
+    border-bottom: gray solid 1px;
+    }
 }
 main {
+  overflow: hidden auto;
   grid-area: main;
+  overflow: auto;
+  height: calc(100dvh - var(--header-height) - var(--footer-height));
+}
+.full_h {
+  /* height: calc(100dvh - var(--header-height) - var(--footer-height)); */
+  overflow: auto;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+.nothing {
+  overflow: hidden;
 }
 @media screen and (max-width: 800px) {
+  #root {
+    grid-template-columns: var(--nav1-width) 1fr 4rem;
+  }
+
   #root:has(main) {
     /* 'logo header1 header2'
     'nav1 nav2 main'
     'toggle nav2 main'; */
     grid-template-areas:
-      'header2 header2 header2'
+      'logo header2 header2'
       'main main main'
       'footer footer footer';
     nav,
-    .logo,
+    /* .logo, */
     .isoffline,
     .isonline,
     .nav1,
@@ -164,8 +199,28 @@ main {
       display: none;
     }
   }
+  #root:has(main.nofooter) {
+    /* 'logo header1 header2'
+    'nav1 nav2 main'
+    'toggle nav2 main'; */
+    grid-template-areas:
+      'logo header2 header2'
+      'main main main'
+      'main main main';
+    --footer-height: 0rem;
+    .full_h{
+      height: calc(100dvh - var(--header-height));
+    }
+  }
+  #root:has(textarea#message){
+    --footer-height:4rem;
+  }
 }
-main.chat {
-  display: flex;
-  flex-direction: column;
+/* moved to mainchat.css */
+/* main.chat {
+} */
+
+a:hover,button:hover{
+  background-color: rgba(255, 136, 0, 0.753);
+  transition: background-color ease-out 200ms;
 }

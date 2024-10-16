@@ -1,6 +1,6 @@
 .card.contact {
+  position: relative;
   padding: 5px;
-  margin-bottom: 0.2rem;
   display: flex;
   align-items: center;
   gap: 5px;
@@ -10,36 +10,24 @@
     object-fit: cover;
     border-radius: 35%;
   }
-  border-bottom: gray solid 1px;
-  &:last-child {
-    border-bottom: none;
-  }
+  /* border-bottom: gray solid 1px; */
+  
   &.active {
     background-color: var(--orange3);
   }
-}
-.main.contact {
-  padding: 5px;
-  margin-bottom: 0.2rem;
-  display: grid;
-  align-items: start;
-  gap: 5px;
-  height: fit-content;
-  width: fit-content;
-  img {
-    width: min(100%, 15rem);
-    margin-inline: auto;
-    object-fit: cover;
-    border-radius: 5%;
-  }
-  span {
-    background-color: rgba(128, 128, 128, 0.5);
-    padding: 0.5rem;
-    display: grid;
-    grid-template-columns: 3rem 1fr;
-    gap: 1rem;
+  & .userisonline{
+    position: absolute;
+    height: 0.3rem;
+    width: 50%;
+    position: absolute;
+    right: 5px;
+    bottom: 2px;
+    background-image: linear-gradient(to left, limegreen, transparent);
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
   }
 }
+
 /* main.chat moved to mainchat.css */
 .detailes.user {
   padding: 5px;

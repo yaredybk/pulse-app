@@ -45,20 +45,6 @@ export default function ProfilePage() {
         </center>
       )}
       {userInfo.name && <UserDetailes {...userInfo} />}
-      <br />
-      {process.env.NODE_ENV == 'development' && (
-        <>
-          <a href="/api/login" className="btn hero login">
-            login
-          </a>
-          <button
-            onClick={() => fetch('/api/protected')}
-            className="btn hero login"
-          >
-            refetch
-          </button>
-        </>
-      )}
     </main>
   );
 }

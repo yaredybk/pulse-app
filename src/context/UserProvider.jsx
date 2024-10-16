@@ -12,9 +12,10 @@ export default function UserProvider(props) {
    * picture: string,
    * email: string},setUser:function]}
    */
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem('user_info') || '{}')
-  );
+  const [user, setUser] = useState({
+    ...JSON.parse(localStorage.getItem('user_info') || '{}'),
+    isLoading: true,
+  });
   function setUserLocalSt(user) {
     setUser({ ...user });
     localStorage.setItem('user_info', JSON.stringify(user));
@@ -25,19 +26,27 @@ export default function UserProvider(props) {
     }
     let data = {};
     try {
-      const res = await fetch('/api/info/me');
+      const res = await fetch('/api/info/me', { redirect: 'error' });
+      if (res.status == 401) {
+        if (window.location.pathname != '/a/profile/me') {
+          setUserLocalSt({ isLoading: false });
+          window.location.assign('/a/profile/me');
+          return Promise.reject();
+        }
+      }
       if (!res.ok) {
         setUserLocalSt({ ...user, online: false, isLoading: false });
         return Promise.reject({ online: false });
       }
       data = await res.json();
     } catch (e) {
-      setUserLocalSt({ ...user, online: false, isLoading: false });
+      console.warn(e);
+      setUserLocalSt({ online: false, isLoading: false });
       return Promise.reject({ online: false });
     }
     return new Promise((resolve, reject) => {
       if (!data) {
-        setUserLocalSt({ ...user, online: false, isLoading: false });
+        setUserLocalSt({ user, online: false, isLoading: false });
         return reject({ online: false });
       }
       if (data?.user) data = data.user;
@@ -48,7 +57,7 @@ export default function UserProvider(props) {
       } else {
         resolve();
         document.title = `Pulse | ${data?.name || data?.email}`;
-        setUserLocalSt({ ...user, ...data, isLoading: false });
+        setUserLocalSt({ ...data, isLoading: false });
       }
     });
   }

@@ -1,7 +1,7 @@
 import './home.css';
 export default function Home() {
   return (
-    <div className="main home">
+    <div className="main home bg_logo full_h nofooter">
       <center>
         <h1>
           <img src="/a/favicon_bg.png" alt="logo" />

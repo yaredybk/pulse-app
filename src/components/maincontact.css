@@ -1,0 +1,78 @@
+.main.contact {
+  overflow: auto;
+  padding: 5px;
+  margin-bottom: 0.2rem;
+  /* display: grid; */
+  /* grid-template-columns:repeat(auto-fit, minmax(20rem,auto)); */
+  height: calc(100dvh - var(--header-height) - 0.3rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  align-content: start;
+  position: relative;
+  & .online {
+    position: absolute;
+    flex: 1;
+    flex-basis: 0;
+    left: 0.5rem;
+    top: 0.5rem;
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+    background-color: red;
+    &._true, &._1 {
+      background-color: rgba(13, 236, 13, 0.884);
+    }
+  }
+  .logo{
+    height: 2rem;
+    width: 2rem;
+  }
+  a{
+    display: block;
+    margin: 0.5rem;
+    background-color: var(--orange4);
+  }
+  img.profile {
+    /* flex-basis: 10rem; */
+    /* flex: 1; */
+    flex: 1 1 10rem;
+    width: min(100%, 10rem);
+    max-width: 15rem;
+    margin: 0.5rem;
+    object-fit: cover;
+    border-radius: 5%;
+    margin-bottom: auto;
+    min-height: 5rem;
+  }
+  ul {
+    /* flex-basis: 15rem; */
+    flex: 1 1 20rem;
+    margin: 0px;
+    padding: 0;
+  }
+  li {
+    padding: 0.4rem 0.2rem;
+    margin-bottom: 5px;
+    background-color: rgba(128, 128, 128, 0.5);
+    display: grid;
+    grid-template-columns: 3rem auto min-content;
+    gap: 1rem;
+  }
+  .logout{
+    display: block;
+  }
+}
+#edit_form {
+  i {
+    display: none;
+  }
+  input {
+    padding: 0.5rem;
+  }
+  form {
+    display: grid;
+    gap: 1rem;
+  }
+}
