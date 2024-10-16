@@ -10,7 +10,7 @@ import { Link, useLocation } from 'react-router-dom';
 export default function CardContact({
   user,
   type = 'user',
-  to = '/contact/global/',
+  to = '/contact/public/',
   active,
 }) {
   const { state } = useLocation();

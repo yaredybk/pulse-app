@@ -31,14 +31,31 @@ export default function ListNav2({ title, category, active }) {
     type,
     category: categoryin,
   }) => {
+    console.log({
+      data,
+      touuid,
+      fromuuid,
+      type,
+      categoryin,
+    });
+    console.log({ title, category });
+
     if (type != title || category != categoryin)
       return console.warn('nav missmatch', type, category);
+
     const ind = navlist.findIndex((n) => fromuuid == n.uuid);
-    if (!ind)
+    if (ind == -1)
       setNavlist((p) => [
         { ...data, uuid: fromuuid != uuid ? fromuuid : touuid },
         ...p,
       ]);
+    else {
+      setNavlist((p) => [
+        navlist[ind],
+        ...p.slice(0, ind),
+        ...p.slice(ind + 1),
+      ]);
+    }
   };
   useEffect(() => {
     synContext.messageNav.update && getUpdates(synContext.messageNav);

@@ -13,7 +13,7 @@ export default function MainContact({ user: userin }) {
       <Link
         className="btn hero"
         state={{ user }}
-        to={`/chat/global/${user.uuid}`}
+        to={`/chat/public/${user.uuid}`}
       >
         Chat with {user.name}
       </Link>

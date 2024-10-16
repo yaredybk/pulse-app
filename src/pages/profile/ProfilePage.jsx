@@ -24,13 +24,25 @@ export default function ProfilePage() {
     <main className="main profile">
       {userInfo.isLoading && <span>loading</span>}
       {!userInfo.isLoading && !userInfo.name && (
-        <div>
+        <center>
+          <h1
+            style={{
+              display: 'flex',
+              marginInline: 'auto',
+              gap:'1rem',
+              justifyContent: 'center',
+            }}
+          >
+            <img height={40} src="/a/favicon_bg.png" alt="logo" />
+            pulse
+          </h1>
+          <i>Real-Time Conversations, Simplified</i>
           <h2 className="warn">Login/Signup to get access</h2>
           <br />
           <a href="/api/login" className="btn hero login">
             login
           </a>
-        </div>
+        </center>
       )}
       {userInfo.name && <UserDetailes {...userInfo} />}
       <br />

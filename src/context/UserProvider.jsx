@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { _getMe } from '../utils/utils';
 import { User } from './context';
 
@@ -20,24 +20,58 @@ export default function UserProvider(props) {
     localStorage.setItem('user_info', JSON.stringify(user));
   }
   async function refresh() {
+    if (!window.navigator.onLine) {
+      return Promise.reject('offline');
+    }
+    let data = {};
+    try {
+      const res = await fetch('/api/info/me');
+      if (!res.ok) {
+        setUserLocalSt({ ...user, online: false, isLoading: false });
+        return Promise.reject({ online: false });
+      }
+      data = await res.json();
+    } catch (e) {
+      setUserLocalSt({ ...user, online: false, isLoading: false });
+      return Promise.reject({ online: false });
+    }
     return new Promise((resolve, reject) => {
-      _getMe()
-        .then((user_) => {
-          if (!user_ && window.location.pathname != '/a/profile/me') {
-            setUserLocalSt({ isLoading: false });
-            window.location.assign('/a/profile/me');
-          } else {
-            document.title = `Pulse | ${user_?.name || user_?.email}`;
-            setUserLocalSt({ ...user, ...user_, isLoading: false });
-          }
-          resolve();
-        })
-        .catch((e) => {
-          console.warn(e);
-          reject();
-        });
+      if (!data) {
+        setUserLocalSt({ ...user, online: false, isLoading: false });
+        return reject({ online: false });
+      }
+      if (data?.user) data = data.user;
+      if (!data && window.location.pathname != '/a/profile/me') {
+        setUserLocalSt({ isLoading: false });
+        window.location.assign('/a/profile/me');
+        reject();
+      } else {
+        resolve();
+        document.title = `Pulse | ${data?.name || data?.email}`;
+        setUserLocalSt({ ...user, ...data, isLoading: false });
+      }
     });
   }
+  useEffect(() => {
+    const offline = () => {
+      console.log('offline');
+      setUser((p) => {
+        return { ...p, online: false };
+      });
+    };
+    window.addEventListener('offline', offline);
+    const online = () => {
+      console.log('online');
+      refresh();
+    };
+    window.addEventListener('online', online);
+
+    return () => {
+      window.removeEventListener('offline', offline);
+      window.removeEventListener('online', online);
+    };
+  }, []);
+
   // refresh is called on SyncProvider
   // useEffect(() => {
   //   refresh();

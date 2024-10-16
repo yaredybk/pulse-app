@@ -11,6 +11,7 @@
   --nav1-width: minmax(3rem, 8vw);
   --nav2-width: minmax(10rem, 30vw);
   --header-height: 2.5rem;
+  --footer-height: 3rem;
 }
 * {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
@@ -58,7 +59,7 @@ body {
   block-size: 100dvh;
   block-size: 100svh;
   grid-template-columns: var(--nav1-width) var(--nav2-width) 1fr;
-  grid-template-rows: var(--header-height) 1fr var(--header-height);
+  grid-template-rows: var(--header-height) 1fr var(--footer-height);
   /* original areas */
   /* 'logo header1 header2'
     'nav1 nav2 main'

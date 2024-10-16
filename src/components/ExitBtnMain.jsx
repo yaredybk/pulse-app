@@ -1,13 +1,16 @@
-import { useState } from 'react';
+// import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function ExitBtnMain() {
-  const [last, setlast] = useState();
+  // const [last, setlast] = useState();
+  const nav = useNavigate();
   function onClick() {
     const { pathname } = window.location;
-    if (last == pathname) return window.location.replace('/a');
-    setlast(pathname);
-    if (window.history.length <= 2) return window.location.replace('/a');
-    window.history.back();
+    nav(pathname.replace('/a','').replace(/[^/]*.$/, '') || '/');
+    // if (last == pathname) return window.location.replace('/a');
+    // setlast(pathname);
+    // if (window.history.length <= 2) return window.location.replace('/a');
+    // window.history.back();
   }
   return (
     <button

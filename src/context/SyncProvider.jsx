@@ -53,27 +53,35 @@ export default function SyncProvider(props) {
    * **Note:** if timeoutrange is zero (0): auto reconnect is disabled
    * @param {number} [timeoutrange=5000] amout of delay to reconnect
    */
-  async function startSync(timeoutrange = 5000) {
+  function startSync(timeoutrange = 5000) {
     if (__isConnecting__) return console.warn('__isConnecting__');
     __isConnecting__ = true;
-    await refresh();
-    let wsLink = '/ws';
-    if (process.env.NODE_ENV == 'development')
-      wsLink = 'ws://' + new URL(window.location).hostname + ':5000/ws';
-    const socket = new WebSocket(wsLink);
-    socket.addEventListener('message', (e) => handleSocketMessage(e));
-    socket.addEventListener('open', () => {
-      socket.send('hi there');
-      timeoutrange && setIsConnected(() => true);
-      __isConnecting__ = false;
-    });
-    function reconnect_() {
-      timeoutrange && setIsConnected(() => false);
-      __isConnecting__ = false;
-    }
-    socket.addEventListener('close', reconnect_);
-    socket.addEventListener('error', reconnect_);
-    ws.current = socket;
+    refresh()
+      .then(() => {
+        let wsLink = '/ws';
+        if (process.env.NODE_ENV == 'development')
+          wsLink = 'ws://' + new URL(window.location).hostname + ':5000/ws';
+        const socket = new WebSocket(wsLink);
+        socket.addEventListener('message', (e) => handleSocketMessage(e));
+        socket.addEventListener('open', () => {
+          socket.send('hi there');
+          timeoutrange && setIsConnected(() => true);
+          __isConnecting__ = false;
+        });
+        function reconnect_() {
+          timeoutrange && setIsConnected(() => false);
+          __isConnecting__ = false;
+        }
+        socket.addEventListener('close', reconnect_);
+        socket.addEventListener('error', reconnect_);
+        ws.current = socket;
+      })
+      .catch((e) => {
+        __isConnecting__ = false;
+        __timeo__ = setTimeout(() => {
+          startSync(timeoutrange * 1.2);
+        }, timeoutrange * 1.2);
+      });
   }
   useEffect(() => {
     function onVisibilityChange() {
@@ -89,7 +97,9 @@ export default function SyncProvider(props) {
         if (!ws.current) startSync();
         else if (!isConnected) {
           ws.current.close();
-          startSync();
+          setTimeout(() => {
+            startSync();
+          }, 1000);
         }
       }
     }
