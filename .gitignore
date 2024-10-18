@@ -149,3 +149,5 @@ dist-ssr
 
 # custom ignores
 .ignore*
+
+dev

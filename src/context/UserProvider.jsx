@@ -22,6 +22,7 @@ export default function UserProvider(props) {
   }
   async function refresh() {
     if (!window.navigator.onLine) {
+      setUserLocalSt({ online: false, isLoading: false });
       return Promise.reject('offline');
     }
     let data = {};
@@ -31,12 +32,12 @@ export default function UserProvider(props) {
         if (window.location.pathname != '/a/profile/me') {
           setUserLocalSt({ isLoading: false });
           window.location.assign('/a/profile/me');
-          return Promise.reject();
+          return Promise.reject(401);
         }
       }
       if (!res.ok) {
         setUserLocalSt({ ...user, online: false, isLoading: false });
-        return Promise.reject({ online: false });
+        return Promise.reject('error');
       }
       data = await res.json();
     } catch (e) {
@@ -44,28 +45,26 @@ export default function UserProvider(props) {
       setUserLocalSt({ online: false, isLoading: false });
       return Promise.reject({ online: false });
     }
-    return new Promise((resolve, reject) => {
-      if (!data) {
-        setUserLocalSt({ user, online: false, isLoading: false });
-        return reject({ online: false });
-      }
-      if (data?.user) data = data.user;
-      if (!data && window.location.pathname != '/a/profile/me') {
-        setUserLocalSt({ isLoading: false });
-        window.location.assign('/a/profile/me');
-        reject();
-      } else {
-        resolve();
-        document.title = `Pulse | ${data?.name || data?.email}`;
-        setUserLocalSt({ ...data, isLoading: false });
-      }
-    });
+    if (!data) {
+      setUserLocalSt({ user, online: false, isLoading: false });
+      return Promise.reject({ online: false });
+    }
+    if (data?.user) data = data.user;
+    if (!data) {
+      if (window.location.pathname != '/a/me') window.location.assign('/a/me');
+      setUserLocalSt({ isLoading: false });
+      return Promise.reject();
+    } else {
+      document.title = `Pulse | ${data?.name || data?.email}`;
+      setUserLocalSt({ ...data, isLoading: false });
+      return Promise.resolve();
+    }
   }
   useEffect(() => {
     const offline = () => {
       console.log('offline');
       setUser((p) => {
-        return { ...p, online: false };
+        return { ...p, online: false, isLoading: false };
       });
     };
     window.addEventListener('offline', offline);

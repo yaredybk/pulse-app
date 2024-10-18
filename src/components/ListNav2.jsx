@@ -7,7 +7,7 @@ export default function ListNav2({ title, category, active }) {
   const { uuid, isLoading } = useContext(User);
   const [navlist, setNavlist] = useState([]);
   async function getListNav(title_, category_) {
-    if (['chat', 'contact', 'search'].find((a) => a == title_)) {
+    if (['chat', 'contact', 'search'].some((a) => a == title_)) {
       fetch(`/api/list/${title_}/${category_}`)
         .then((res) => {
           if (res.ok) {
@@ -20,13 +20,8 @@ export default function ListNav2({ title, category, active }) {
         .catch(console.warn);
     }
   }
-  useEffect(() => {
-    if (!isLoading)
-      title && category ? getListNav(title, category) : setNavlist([]);
-    return () => {};
-  }, [title, category, isLoading]);
   const getUpdates = ({
-    data,
+    // data,
     touuid,
     fromuuid,
     type,
@@ -37,7 +32,7 @@ export default function ListNav2({ title, category, active }) {
     const uuid_ = fromuuid == uuid ? touuid : fromuuid;
     const ind = navlist.findIndex((n) => uuid_ == n.uuid);
     if (ind == -1) setNavlist((p) => [{ uuid: uuid_ }, ...p]);
-    else {
+    else if (ind != 0) {
       setNavlist((p) => [
         navlist[ind],
         ...p.slice(0, ind),
@@ -45,6 +40,11 @@ export default function ListNav2({ title, category, active }) {
       ]);
     }
   };
+  useEffect(() => {
+    if (!isLoading)
+      title && category ? getListNav(title, category) : setNavlist([]);
+    return () => {};
+  }, [title, category, isLoading]);
   useEffect(() => {
     synContext.messageNav.update && getUpdates(synContext.messageNav);
   }, [synContext.messageNav.update]);

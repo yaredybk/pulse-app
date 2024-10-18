@@ -77,6 +77,7 @@ export default function SyncProvider(props) {
         ws.current = socket;
       })
       .catch((e) => {
+        console.warn(e);
         __isConnecting__ = false;
         __timeo__ = setTimeout(() => {
           startSync(timeoutrange * 1.2);

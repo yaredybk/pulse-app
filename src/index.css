@@ -21,6 +21,7 @@
   accent-color: var(--orange3);
   box-sizing: border-box;
 }
+[role=button],
 button {
   cursor: pointer;
 }
@@ -92,6 +93,17 @@ body {
 a.logo {
   display: flex;
   place-self: center;
+}
+img.logo_inline {
+  height: 1rem;
+  width: auto;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+h1 img.logo_inline {
+  height: 2rem;
+  width: auto;
+  margin-right: 1rem;
 }
 header {
   border-bottom: 1px gray solid;

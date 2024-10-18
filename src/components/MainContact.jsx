@@ -24,9 +24,19 @@ export default function MainContact({ user: userin, online }) {
         className={'online _' + (online || user.active)}
         title={online || user.active ? 'online' : 'offline'}
       ></div>
-      {user.uuid && (
+      {user.uuid ? (
         <>
-          <img className="profile" src={user.profile} alt="" />
+          <div className="relative profile_image">
+            <img role='button' className="profile" src={user.profile} alt="" />
+            {canEdit && (
+              <button
+                onClick={() => openModal('profile')}
+                className="material-symbols-outlined bottom_left"
+              >
+                edit
+              </button>
+            )}
+          </div>
           <ul>
             {!canEdit && (
               <Link
@@ -40,7 +50,7 @@ export default function MainContact({ user: userin, online }) {
             {Object.keys(user)
               .filter((k) => k != 'profile')
               .map((k) => (
-                <li key={k}>
+                <li className={k} key={k}>
                   <i>{k}: </i>
                   <b>{user[k]}</b>
                   {canEdit && (
@@ -79,11 +89,12 @@ export default function MainContact({ user: userin, online }) {
             )}
           </ul>
         </>
-      )}
-      {!moreUserInfo.isLoading && !user.uuid && (
+      ): moreUserInfo.isLoading ? (
+        <span>Loading user ... </span>
+      ) : (
         <center>
           <h1>
-            <img className="logo" src="/a/favicon_bg.png" alt="logo" />
+            <img className="logo_inline" src="/a/favicon_bg.png" alt="logo" />
             pulse
           </h1>
           <i>Real-Time Conversations, Simplified</i>
@@ -98,17 +109,27 @@ export default function MainContact({ user: userin, online }) {
         <form onSubmit={onSubmit}>
           <header>update {formData.name}</header>
           <label>
-            <Input
-              inputType={formData.name}
-              placeholder={formData.name}
-              readOnly={readOnly}
-              value={formData.value || ''}
-              onChange={({ target }) =>
-                setFormData({ name: formData.name, value: target.value })
-              }
-              type="text"
-              name={formData.name}
-            />
+            {formData.name == 'profile' ? (
+              <input
+                onChange={({ target }) => {
+                  setFormData({ name: formData.name, value: target.files[0] });
+                }}
+                type="file"
+                name="image"
+              />
+            ) : (
+              <Input
+                inputType={formData.name}
+                placeholder={formData.name}
+                readOnly={readOnly}
+                value={formData.value || ''}
+                onChange={({ target }) => {
+                  setFormData({ name: formData.name, value: target.value });
+                }}
+                type="text"
+                name={formData.name}
+              />
+            )}
           </label>
           {readOnly && <div className="warning">This field is readOnly.</div>}
           <button disabled={readOnly} className="btn hero">
@@ -137,13 +158,25 @@ export default function MainContact({ user: userin, online }) {
     e.preventDefault();
     if (isLoading) return;
     setIsLoading(true);
-    const r1 = await fetch('/api/info/me', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ [formData.name]: formData.value }),
-    });
+    let data;
+    if (formData.name == 'profile') {
+      data = new FormData();
+      data.append('image', formData.value);
+    } else data = JSON.stringify({ [formData.name]: formData.value });
+    console.log(formData.value);
+    console.log(data);
+    const d =
+      formData.name == 'profile'
+        ? {
+            method: 'POST',
+            body: data,
+          }
+        : {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: data,
+          };
+    const r1 = await fetch('/api/info/me', d);
     if (!r1 || !r1.ok || r1.status == 401) {
       setIsLoading(false);
       return alert('failed\n' + (r1.statusText || r1.status));
@@ -157,14 +190,23 @@ export default function MainContact({ user: userin, online }) {
       setIsLoading(false);
       return alert('no data from server');
     }
-    setUser({ ...moreUserInfo, ...(r2.user || r2 || {}) });
+    console.log(r2.user);
+    
+    setUser((p) => {
+      console.log({ ...p, ...r2.user });
+      
+      return { ...p, ...r2.user };
+    });
     modalRef.current.close();
     setIsLoading(false);
   }
 }
 
-function Input({ inputType, ...props }) {
+function Input({ value, inputType, ...props }) {
   if (inputType == 'bio')
-    return <textarea rows="3" cols="35" {...props}></textarea>;
-  return <input {...props}></input>;
+    return <textarea value={value} rows="3" cols="35" {...props}></textarea>;
+  if (inputType == 'profile')
+    return <input {...props} accept="image" type="file" name="image" />;
+
+  return <input value={value} {...props}></input>;
 }

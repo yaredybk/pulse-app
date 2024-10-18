@@ -33,7 +33,7 @@ export default function ProfilePage() {
               justifyContent: 'center',
             }}
           >
-            <img height={40} src="/a/favicon_bg.png" alt="logo" />
+            <img className='logo_inline'  src="/a/favicon_bg.png" alt="logo" />
             pulse
           </h1>
           <i>Real-Time Conversations, Simplified</i>

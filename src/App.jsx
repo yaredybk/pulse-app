@@ -12,6 +12,7 @@ import Home from './pages/home/Home';
 import { useContext } from 'react';
 import { Sync, User } from './context/context';
 import NothingHere from './components/NothingHere';
+import Dev from '../dev/Dev';
 
 function App() {
   const { active, online, isLoading, refresh, setUser, ...userInfo } =
@@ -53,6 +54,7 @@ function App() {
       </Routes>
       {/* main */}
       <Routes>
+        <Route path="/dev" element={<Dev/>}/>
         <Route path="/" element={<Home />} />
         <Route
           path="/me"
