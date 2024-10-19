@@ -126,8 +126,7 @@ export default function MainChat({ user: userin, type = 'chat' }) {
           value={text}
           onKeyDown={(e) => {
             const { shiftKey, ctrlKey, key } = e;
-            // if ((shiftKey || ctrlKey) && key == 'Enter') {
-            if (key == 'Enter') {
+            if ((shiftKey || ctrlKey) && key == 'Enter') {
               e.preventDefault();
               send();
             }

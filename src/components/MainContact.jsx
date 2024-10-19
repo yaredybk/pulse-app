@@ -3,6 +3,7 @@ import { useContext, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { User } from '../context/context';
 import ExitBtnMain from './ExitBtnMain';
+import RenderInfoFields from './RenderInfoFields';
 
 /**
  * @param {Object} param0 parametres
@@ -25,82 +26,24 @@ export default function MainContact({ user: userin, online }) {
       <header className="header2 wide">
         <ExitBtnMain />
       </header>
-      <main className="main contact nofooter bg_logo">
+      <main className="main info contact nofooter bg_logo">
         {user.uuid ? (
-          <>
-            <div
-              className={'online _' + (online || user.active)}
-              title={online || user.active ? 'online' : 'offline'}
-            ></div>
-            <div className="relative profile_image">
-              <img
-                role="button"
-                className="profile"
-                src={user.profile}
-                alt=""
-              />
-              <span className="bottom_left user_name">{user.name}</span>
-              {canEdit && (
-                <button
-                  onClick={() => openModal('profile')}
-                  className="material-symbols-outlined bottom_right"
-                >
-                  edit
-                </button>
-              )}
-            </div>
-            <ul>
-              {!canEdit && (
-                <Link
-                  className="btn hero"
-                  state={{ user }}
-                  to={`/chat/public/${user.uuid}`}
-                >
-                  Chat with {user.name}
-                </Link>
-              )}
-              {Object.keys(user)
-                .filter((k) => k != 'profile')
-                .map((k) => (
-                  <li className={k} key={k}>
-                    <i>{k}: </i>
-                    <b>{user[k]}</b>
-                    {canEdit && (
-                      <button
-                        onClick={() => openModal(k)}
-                        className="material-symbols-outlined"
-                      >
-                        edit
-                      </button>
-                    )}
-                  </li>
-                ))}
-              {canEdit && (
-                <>
-                  <a
-                    href="/a/"
-                    style={{
-                      backgroundColor: 'greenyellow',
-                      borderRadius: '1rem',
-                      padding: '0.5rem 3rem',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      gap: '1rem',
-                      fontSize: '1.3rem',
-                    }}
-                    className=" hero"
-                  >
-                    <span className="material-symbols-outlined hero">home</span>
-                    <span>Go to Home</span>
-                  </a>
-                  <br />
-                  <a href="/api/logout" className="btn warn logout">
-                    logout
-                  </a>
-                </>
-              )}
-            </ul>
-          </>
+          <RenderInfoFields
+            canEdit={canEdit}
+            online={online}
+            user={user}
+            openModal={openModal}
+          >
+            {!canEdit && (
+              <Link
+                className="btn hero"
+                state={{ user }}
+                to={`/chat/public/${user.uuid}`}
+              >
+                Chat with {user.name}
+              </Link>
+            )}
+          </RenderInfoFields>
         ) : (
           <center>
             <h1>
@@ -144,10 +87,13 @@ export default function MainContact({ user: userin, online }) {
                 />
               )}
             </label>
-            {readOnly && <div className="warning">This field is readOnly.</div>}
-            <button disabled={readOnly} className="btn hero">
-              save
-            </button>
+            {readOnly ? (
+              <div className="warning">This field is readOnly.</div>
+            ) : (
+              <button disabled={readOnly} className="btn hero">
+                save
+              </button>
+            )}
             <i>&nbsp; &nbsp;</i>
             <button
               onClick={() => {
@@ -177,8 +123,6 @@ export default function MainContact({ user: userin, online }) {
       data = new FormData();
       data.append('image', formData.value);
     } else data = JSON.stringify({ [formData.name]: formData.value });
-    console.log(formData.value);
-    console.log(data);
     const d =
       formData.name == 'profile'
         ? {
@@ -204,11 +148,7 @@ export default function MainContact({ user: userin, online }) {
       setIsLoading(false);
       return alert('no data from server');
     }
-    console.log(r2.user);
-
     setUser((p) => {
-      console.log({ ...p, ...r2.user });
-
       return { ...p, ...r2.user };
     });
     modalRef.current.close();

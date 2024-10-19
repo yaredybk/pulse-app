@@ -10,6 +10,7 @@ import { Sync, User } from './context/context';
 import NothingHere from './components/NothingHere';
 import Dev from '../dev/Dev';
 import NewRoom from './components/new/NewRoom';
+import ManageRoom from './pages/room/ManageRoom';
 
 function App() {
   const { active, online, isLoading, refresh, setUser, ...userInfo } =
@@ -42,6 +43,10 @@ function App() {
         <Route path="/chat/:category/:uuid" element={<MainChat />} />
         <Route path="/chat/:category/:uuid/:idchat" element={<MainChat />} />
         <Route path="/room/:category/new" element={<NewRoom />} />
+        <Route
+          path="/room/info/:uuid/:idroom"
+          element={<ManageRoom />}
+        />
         <Route
           path="/room/:category/:uuid/:idroom"
           element={<MainChat type="room" />}

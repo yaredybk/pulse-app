@@ -129,6 +129,9 @@ header {
 }
 .header2 {
   grid-area: header2;
+  h2{
+    margin: 0.2rem 1rem;
+  }
 }
 .header2.wide {
   grid-column-start: 2;
@@ -200,6 +203,7 @@ main {
   grid-area: main;
   overflow: auto;
   height: calc(100dvh - var(--header-height) - var(--footer-height));
+  height: calc(100svh - var(--header-height) - var(--footer-height));
 }
 .full_h {
   /* height: calc(100dvh - var(--header-height) - var(--footer-height)); */
@@ -246,6 +250,7 @@ main {
     --footer-height: 0rem;
     .full_h {
       height: calc(100dvh - var(--header-height));
+      height: calc(100svh - var(--header-height));
     }
   }
   #root:has(textarea#message) {

@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { _getMe } from '../utils/utils';
 import { User } from './context';
 
 export default function UserProvider(props) {
+  const loginRef = useRef();
   /**
    * @type {[user:{
    * online:boolean,
@@ -27,13 +28,20 @@ export default function UserProvider(props) {
     }
     let data = {};
     try {
-      const res = await fetch('/api/info/me', { redirect: 'error' });
-      if (res.status == 401) {
-        if (window.location.pathname != '/a/profile/me') {
-          setUserLocalSt({ isLoading: false });
-          window.location.assign('/a/profile/me');
-          return Promise.reject(401);
-        }
+      const res = await fetch('/api/info/me', { redirect: 'manual' });
+      if (
+        res.status == 401 ||
+        res.status == 302 ||
+        res.type == 'opaqueredirect'
+      ) {
+        setUserLocalSt({ isLoading: false });
+        console.log(loginRef.current);
+
+        loginRef.current.showModal();
+        // if (window.location.pathname != '/a/profile/me') {
+        //   window.location.assign('/a/profile/me');
+        // }
+        return Promise.reject(401);
       }
       if (!res.ok) {
         setUserLocalSt({ ...user, online: false, isLoading: false });
@@ -42,6 +50,7 @@ export default function UserProvider(props) {
       data = await res.json();
     } catch (e) {
       console.warn(e);
+      console.warn(e.status);
       setUserLocalSt({ online: false, isLoading: false });
       return Promise.reject({ online: false });
     }
@@ -87,6 +96,24 @@ export default function UserProvider(props) {
   return (
     <User.Provider value={{ ...user, refresh, setUser }}>
       {props.children}
+      <dialog ref={loginRef} id="login_dialog">
+        <center>
+          <h1>
+            <img className="logo_inline" src="/a/favicon_bg.png" alt="logo" />
+            pulse
+          </h1>
+          <i>Real-Time Conversations, Simplified</i>
+          <h2 className="warn">Login/Signup to get access</h2>
+          <br />
+          <a href="/api/login" className="btn hero login">
+            login
+          </a>
+          <br />
+          <br />
+          <br />
+          <a href="/">back to home page</a>
+        </center>
+      </dialog>
     </User.Provider>
   );
 }

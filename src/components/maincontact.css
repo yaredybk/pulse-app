@@ -1,4 +1,4 @@
-.main.contact {
+.main.info {
   overflow: auto;
   padding: 5px;
   margin-bottom: 0.2rem;
@@ -38,7 +38,8 @@
     img {
       /* height: 100%; */
       /* min-height: 5rem; */
-      max-height: 10rem;
+      min-width:10rem ;
+      max-width: min(15rem,40vw);
       aspect-ratio: 1;
       object-fit: cover;
       background-color: grey;
@@ -51,6 +52,7 @@
     }
     button{
       font-size: 1rem;
+      border: none;
     }
   }
   ul {
@@ -70,6 +72,7 @@
     overflow: hidden;
     background-color: rgba(128, 128, 128, 0.5);
     gap: 0.5rem;
+    position: relative;
     & i {
       float: left;
     }
@@ -77,8 +80,13 @@
       overflow: hidden;
     }
     & button {
+      border: none;
+      background-color: transparent;
       float: right;
-      font-size: 1rem;
+      font-size: 1.3rem;
+      position: absolute;
+      right: 0;
+      top: 0;
     }
   }
   li.bio b{

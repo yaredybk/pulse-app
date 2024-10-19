@@ -24,8 +24,6 @@ export default function ListNav2() {
         })
         .catch(console.warn);
     }else{
-      console.log(123);
-      
       setNavlist([]);
     }
   }
@@ -83,7 +81,7 @@ export default function ListNav2() {
           createPortal(
             <header className="header2">
               <ExitBtnMain onClick={onClick} />
-              {<CardRoom room={selected} />}
+              {<CardRoom to={`/${title}/info/_/`} room={selected} />}
             </header>,
             document.querySelector('header.header2')
           )}

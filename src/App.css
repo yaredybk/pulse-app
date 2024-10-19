@@ -40,16 +40,34 @@ h1.header {
 .isoffline {
   background-image: linear-gradient(to right, red, transparent);
 }
-.relative{
+.relative {
   position: relative;
 }
-.bottom_right{
+.bottom_right {
   position: absolute;
   right: 0;
   bottom: 0;
 }
-.bottom_left{
+.bottom_left {
   position: absolute;
   left: 0;
   bottom: 0;
+}
+#login_dialog {
+  border-radius: 0.5rem;
+  padding: 0;
+  height: fit-content;
+  max-height: 99vh;
+  padding-bottom: 2rem;
+  h1{
+    border-bottom: 8px double var(--orange4);
+    margin-block: 0.5rem 3rem;
+    padding-bottom: 0.2rem;
+  }
+  h2{
+    padding-inline: 5rem;
+  }
+  &::backdrop {
+    background-color: rgba(31, 31, 31, 0.6);
+  }
 }
