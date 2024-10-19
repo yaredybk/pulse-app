@@ -5,6 +5,7 @@ var __timeo__ = 0;
 var __isConnecting__ = false;
 var __document_hidden__ = false;
 export default function SyncProvider(props) {
+  const audioRef = useRef(new Audio('/api/audio/new-notification.mp3'));
   const ws = useRef(null);
   const [isConnected, setIsConnected] = useState();
   const [messageNav, setMessageNav] = useState('');
@@ -14,16 +15,15 @@ export default function SyncProvider(props) {
     if (!e.data) return;
     // if (typeof e.data !== 'string') return console.warn('data not a string');
     let d = e.data;
-    if (!(d.startsWith('{') || d.startsWith('[')))
-      return console.warn(d);
+    if (!(d.startsWith('{') || d.startsWith('['))) return console.warn(d);
     let { data, path } = JSON.parse(d);
     if (!(path && data)) return console.warn('no path or data');
     let pathes = path.replace(/^\//, '').split('/');
     let [root, type, category, touuid, fromuuid] = pathes;
     // console.log([root, type, category, touuid, fromuuid]);
     if (root == 'api') {
-      if (type == 'chat' || type == 'room')
-        return setMessageMain(() => {
+      if (type == 'chat' || type == 'room') {
+        setMessageMain(() => {
           return {
             data,
             touuid,
@@ -33,6 +33,10 @@ export default function SyncProvider(props) {
             update: Date.now(),
           };
         });
+        audioRef.current.currentTime = 0;
+        audioRef.current.play();
+        return;
+      }
     } else if (root == 'message') {
       return setMessageNav(() => {
         return {

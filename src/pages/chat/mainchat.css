@@ -47,7 +47,7 @@
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr min-content;
-  gap: 5px;
+  gap: 2px;
   bottom: 3px;
   margin: 0.2rem;
   & textarea {

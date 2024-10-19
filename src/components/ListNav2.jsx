@@ -9,12 +9,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 export default function ListNav2() {
   const { title, category, uuid: uuid2, idroom } = useParams();
-
   const synContext = useContext(Sync);
   const { uuid, isLoading } = useContext(User);
   const [navlist, setNavlist] = useState([]);
   const [selected, setSelected] = useState();
-  async function getListNav(title_, category_) {
+  async function fetchListNav(title_, category_) {
     if (_nav1.some((a) => a.title == title_)) {
       fetch(`/api/list/${title_}/${category_}`)
         .then(async (res) => {
@@ -24,15 +23,19 @@ export default function ListNav2() {
           }
         })
         .catch(console.warn);
+    }else{
+      console.log(123);
+      
+      setNavlist([]);
     }
   }
-  const getUpdates = ({
+  function onUpdate  ({
     // data,
     touuid,
     fromuuid,
     type,
     category: categoryin,
-  }) => {
+  })  {
     if (type != title || category != categoryin)
       return console.warn('nav missmatch', type, category);
     if (title == 'room') {
@@ -61,11 +64,11 @@ export default function ListNav2() {
   };
   useEffect(() => {
     if (!isLoading)
-      title && category ? getListNav(title, category) : setNavlist([]);
+      title && category ? fetchListNav(title, category) : setNavlist([]);
     return () => {};
   }, [title, category, isLoading]);
   useEffect(() => {
-    synContext.messageNav.update && getUpdates(synContext.messageNav);
+    synContext.messageNav.update && onUpdate(synContext.messageNav);
   }, [synContext.messageNav.update]);
   const nav = useNavigate();
   function onClick() {

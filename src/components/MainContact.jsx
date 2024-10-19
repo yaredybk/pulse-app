@@ -19,7 +19,7 @@ export default function MainContact({ user: userin, online }) {
     (n) => n == formData.name
   );
   const canEdit = uuid == user.uuid;
-  if (moreUserInfo.isLoading) return <span>Loading user ... </span>;
+  if (moreUserInfo.isLoading) return <main>Loading user ... </main>;
   return (
     <>
       <header className="header2 wide">

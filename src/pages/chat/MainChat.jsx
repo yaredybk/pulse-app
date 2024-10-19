@@ -79,9 +79,8 @@ export default function MainChat({ user: userin, type = 'chat' }) {
     _sw.messageMain.update && getUpdates(_sw.messageMain);
   }, [_sw.messageMain.update]);
   function send() {
-    if (!text) {
-      return inputRef.current.focus();
-    }
+    inputRef.current.focus();
+    if (!text) return;
     let data = {
       path: `/api/${type}/${category}/${idroom || uuid}`,
       data: text,
@@ -119,15 +118,16 @@ export default function MainChat({ user: userin, type = 'chat' }) {
           </div>
         ))}
       </main>
-      <div className="main input">
+      <label className="main input">
         <textarea
           ref={inputRef}
           autoFocus
           autoCorrect="on"
           value={text}
           onKeyDown={(e) => {
-            const { shiftKey, ctrlKey, code } = e;
-            if ((shiftKey || ctrlKey) && code == 'Enter') {
+            const { shiftKey, ctrlKey, key } = e;
+            // if ((shiftKey || ctrlKey) && key == 'Enter') {
+            if (key == 'Enter') {
               e.preventDefault();
               send();
             }
@@ -145,7 +145,7 @@ export default function MainChat({ user: userin, type = 'chat' }) {
         >
           send
         </button>
-      </div>
+      </label>
     </>
   );
 }
