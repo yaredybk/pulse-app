@@ -15,14 +15,39 @@
     z-index: 1;
     flex: 1;
     flex-basis: 0;
-    left: 0.5rem;
-    top: 0.5rem;
-    height: 2rem;
-    width: 2rem;
+    left: 0rem;
+    top: 0rem;
+    height: 1rem;
+    width: 1rem;
     border-radius: 50%;
     background-color: red;
     &._true, &._1 {
-      background-color: rgba(13, 236, 13, 0.884);
+      background-color: rgba(2, 255, 2, 0.9);
+    }
+  }
+  
+  div.profile_image {
+    display: block;
+    flex: 1 1 10rem;
+    max-width: fit-content;
+    margin-bottom: auto;
+    border-radius: 1rem;
+    border-bottom-left-radius: 0;
+    overflow: hidden;
+    img {
+      /* height: 100%; */
+      min-height: 5rem;
+      max-height: 15rem;
+      object-fit: contain;
+      overflow: hidden;
+      object-position: center;
+    }
+    .user_name{
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+    }
+    button{
+      font-size: 1rem;
     }
   }
   ul {
@@ -60,23 +85,6 @@
       max-height: 5rem;
       overflow: auto;
       overscroll-behavior-block: contain;
-  }
-  div.profile_image {
-    display: block;
-    flex: 1 1 10rem;
-    max-width: fit-content;
-    margin-bottom: auto;
-    border-radius: 1rem;
-    overflow: hidden;
-    img {
-      /* height: 100%; */
-      min-height: 5rem;
-      max-height: 15rem;
-      border-radius: 1rem;
-      object-fit: contain;
-      overflow: hidden;
-      object-position: center;
-    }
   }
   
   .logout{

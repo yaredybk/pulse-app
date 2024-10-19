@@ -24,7 +24,9 @@ export const User = createContext({ isLoading: true, online: false });
  *              fromuuid:string,
  *              type:string,
  *              category:string,
- *              update:string}
+ *              update:string},        
+ *              setMessageMain:function,
+ *              setMessageNav :function,
  * }>}
  */
 export const Sync = createContext({ isConnected: false });

@@ -1,11 +1,14 @@
+// IS TRASH
+// DO NOT USE THIS COMPONENT
 import { Link, useLocation, useParams } from 'react-router-dom';
 import CardContact from '../../components/CardContact';
 import ExitBtnMain from '../../components/ExitBtnMain';
+import CardRoom from '../../components/CardRoom';
 
 export default function Header2({ index = false, user }) {
-  const { title, category, uuid } = useParams();
+  const { title, category, uuid, idroom } = useParams();
   const { state } = useLocation();
-  const user_ = user || state?.user || {};
+  const user_ = !idroom ? user || state?.user || {} : {};
   if (title == 'me' || category == 'me')
     return (
       <header className="header2">
@@ -13,21 +16,12 @@ export default function Header2({ index = false, user }) {
         <p>Your information</p>
       </header>
     );
-  if (index && !user_.uuid)
+  
+  if (title == 'room')
     return (
-      <header className="header2 wide">
-        <p>
-          you need to{' '}
-          <Link style={{ paddingBlock: '0' }} to="/me" className=" btn hero">
-            login
-          </Link>
-        </p>
-      </header>
-    );
-  if (index)
-    return (
-      <header className="header2 wide">
-        <CardContact user={user_} />
+      <header className="header2">
+        <ExitBtnMain />
+        {<CardRoom title="room" room={{ ...user_, uuid }} />}
       </header>
     );
   return (

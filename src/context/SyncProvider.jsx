@@ -22,7 +22,7 @@ export default function SyncProvider(props) {
     let [root, type, category, touuid, fromuuid] = pathes;
     // console.log([root, type, category, touuid, fromuuid]);
     if (root == 'api') {
-      if (type == 'chat')
+      if (type == 'chat' || type == 'room')
         return setMessageMain(() => {
           return {
             data,
@@ -150,6 +150,8 @@ export default function SyncProvider(props) {
         isConnected,
         messageNav,
         messageMain,
+        setMessageMain,
+        setMessageNav,
         send: ws.current?.send.bind(ws.current),
       }}
     >

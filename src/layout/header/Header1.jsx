@@ -1,22 +1,11 @@
 import { Link, useParams } from 'react-router-dom';
+import { _nav2 } from '../../preset';
 
 export default function Header1() {
   const { title: title_, category: category_ } = useParams();
-  const category = {
-    chat: [
-      { title: 'chat' },
-      { title: 'group' },
-      { title: 'public' },
-      // { title: 'me', },
-    ],
-    contact: [{ title: 'person' }, { title: 'public' }],
-    search: [{ title: 'chat' }, { title: 'group' }, { title: 'public' }],
-  }[title_];
-
-  if (!category) return <header className="header1"></header>;
   return (
     <header className="header1">
-      {category.map(({ title: c_ }) => (
+      {_nav2.map(({ title: c_ ,icon}) => (
         <Link
           className={
             c_ == category_
@@ -27,7 +16,7 @@ export default function Header1() {
           to={`/${title_}/${c_}`}
           key={c_}
         >
-          {c_}
+          {icon}
         </Link>
       ))}
     </header>

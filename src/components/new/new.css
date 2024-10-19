@@ -1,0 +1,14 @@
+.new.room{
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  input {
+    padding: 0.5rem;
+  }
+  button{
+    padding: 0.5rem;
+    &:last-child{
+      float: right;
+    }
+  }
+}

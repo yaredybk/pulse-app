@@ -34,6 +34,11 @@
     align-self: flex-end;
     background-color: var(--orange2);
   }
+  div.pre.uuid_undefined{
+    align-self: center;
+    margin-inline: auto;
+    background-color: transparent;
+  }
 }
 .main.input {
   grid-area: footer;

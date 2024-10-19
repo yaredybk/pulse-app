@@ -21,7 +21,7 @@
   accent-color: var(--orange3);
   box-sizing: border-box;
 }
-[role=button],
+[role='button'],
 button {
   cursor: pointer;
 }
@@ -150,7 +150,7 @@ nav.nav1 {
   ul {
     padding: 0;
     & a {
-      padding: 1rem 5px;
+      padding: min(1rem, 2vh) 5px;
       display: block;
       & .active {
         background-color: var(--orange4);
@@ -158,7 +158,12 @@ nav.nav1 {
     }
     & > * {
       border-bottom: gray solid 1px;
-      }
+    }
+    & label {
+      /* font-size: 1.5rem; */
+      margin-left: 0.5rem;
+      vertical-align: bottom;
+    }
   }
 }
 nav.nav2 {
@@ -171,7 +176,24 @@ nav.nav2 {
   overflow: hidden auto;
   & > * {
     border-bottom: gray solid 1px;
+  }
+  & header {
+    background-color: black;
+    color: white;
+    text-align: center;
+    line-height: 1.5rem;
+  }
+  &.new {
+    a {
+      padding: 0.5rem 2rem;
     }
+    & a span{
+      margin-inline: 1rem;
+      font-size: 1.5rem;
+      line-height: 1.5rem;
+      vertical-align: middle;
+    }
+  }
 }
 main {
   overflow: hidden auto;
@@ -192,7 +214,9 @@ main {
   #root {
     grid-template-columns: var(--nav1-width) 1fr 4rem;
   }
-
+  nav.nav1 label {
+    display: none;
+  }
   #root:has(main) {
     /* 'logo header1 header2'
     'nav1 nav2 main'
@@ -220,19 +244,20 @@ main {
       'main main main'
       'main main main';
     --footer-height: 0rem;
-    .full_h{
+    .full_h {
       height: calc(100dvh - var(--header-height));
     }
   }
-  #root:has(textarea#message){
-    --footer-height:4rem;
+  #root:has(textarea#message) {
+    --footer-height: 4rem;
   }
 }
 /* moved to mainchat.css */
 /* main.chat {
 } */
 
-a:hover,button:hover{
+a:hover,
+button:hover {
   background-color: rgba(255, 136, 0, 0.753);
   transition: background-color ease-out 200ms;
 }

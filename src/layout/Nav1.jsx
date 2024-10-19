@@ -1,14 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
+import { _nav1 } from '../preset';
 
 export default function Nav1() {
   const { pathname } = useLocation();
-  const navlist = [
-    // { title: 'home', to: '/' },
-    { title: 'chat', to: '/chat/public/' },
-    { title: 'contacts', to: '/contact/public/' },
-    { title: 'search', to: '/search/public/' },
-    { title: 'more_horiz', to: '/me' },
-  ];
   return (
     <nav className="nav1 bg_logo">
       <ul>
@@ -24,18 +18,19 @@ export default function Nav1() {
             home
           </Link>
         </li>
-        {navlist.map(({ title, to }, ind) => (
+        {_nav1.map(({ title, to,icon }, ind) => (
           <li key={ind + title}>
             <Link
               className={
-                pathname.startsWith('/' + title.replace(/s$/, ''))
+                pathname.startsWith('/'+title)
                   ? 'active material-symbols-outlined'
                   : 'material-symbols-outlined'
               }
               to={to}
               title={title}
             >
-              {title}
+              {icon}
+              <label>{title}</label>
             </Link>
           </li>
         ))}

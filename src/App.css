@@ -43,6 +43,11 @@ h1.header {
 .relative{
   position: relative;
 }
+.bottom_right{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
 .bottom_left{
   position: absolute;
   left: 0;

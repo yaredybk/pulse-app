@@ -1,21 +1,27 @@
 import { useContext, useEffect, useState } from 'react';
 import CardContact from './CardContact';
 import { Sync, User } from '../context/context';
+import { _nav1 } from '../preset';
+import CardRoom from './CardRoom';
+import { createPortal } from 'react-dom';
+import ExitBtnMain from './ExitBtnMain';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export default function ListNav2({ title, category, active }) {
+export default function ListNav2() {
+  const { title, category, uuid: uuid2, idroom } = useParams();
+
   const synContext = useContext(Sync);
   const { uuid, isLoading } = useContext(User);
   const [navlist, setNavlist] = useState([]);
+  const [selected, setSelected] = useState();
   async function getListNav(title_, category_) {
-    if (['chat', 'contact', 'search'].some((a) => a == title_)) {
+    if (_nav1.some((a) => a.title == title_)) {
       fetch(`/api/list/${title_}/${category_}`)
-        .then((res) => {
+        .then(async (res) => {
           if (res.ok) {
-            return res.json();
-          } else setNavlist([]);
-        })
-        .then((d) => {
-          d && setNavlist(d.filter(({ uuid: u }) => u != uuid));
+            let d = await res.json();
+            d ? setNavlist(d) : setNavlist([]);
+          }
         })
         .catch(console.warn);
     }
@@ -29,15 +35,28 @@ export default function ListNav2({ title, category, active }) {
   }) => {
     if (type != title || category != categoryin)
       return console.warn('nav missmatch', type, category);
-    const uuid_ = fromuuid == uuid ? touuid : fromuuid;
-    const ind = navlist.findIndex((n) => uuid_ == n.uuid);
-    if (ind == -1) setNavlist((p) => [{ uuid: uuid_ }, ...p]);
-    else if (ind != 0) {
-      setNavlist((p) => [
-        navlist[ind],
-        ...p.slice(0, ind),
-        ...p.slice(ind + 1),
-      ]);
+    if (title == 'room') {
+      const idroom = touuid;
+      const ind = navlist.findIndex((n) => idroom == n.uuid);
+      if (ind == -1) setNavlist((p) => [{ idroom }, ...p]);
+      else if (ind != 0) {
+        setNavlist((p) => [
+          navlist[ind],
+          ...p.slice(0, ind),
+          ...p.slice(ind + 1),
+        ]);
+      } else {
+        const uuid_ = fromuuid == uuid ? touuid : fromuuid;
+        const ind = navlist.findIndex((n) => uuid_ == n.uuid);
+        if (ind == -1) setNavlist((p) => [{ uuid: uuid_ }, ...p]);
+        else if (ind != 0) {
+          setNavlist((p) => [
+            navlist[ind],
+            ...p.slice(0, ind),
+            ...p.slice(ind + 1),
+          ]);
+        }
+      }
     }
   };
   useEffect(() => {
@@ -48,41 +67,60 @@ export default function ListNav2({ title, category, active }) {
   useEffect(() => {
     synContext.messageNav.update && getUpdates(synContext.messageNav);
   }, [synContext.messageNav.update]);
-  const nav1 = {
-    chat: 'chats',
-    person: 'private',
-    contact: 'contacts',
-    search: 'search',
-    me: 'me',
-  };
-  const nav2 = {
-    chat: 'private',
-    person: 'private',
-    group: 'group',
-    public: 'public',
-  };
-  return (
-    <>
-      <div
-        style={{
-          backgroundColor: 'black',
-          color: 'white',
-          paddingBlock: '8px',
-          textAlign: 'center',
-        }}
-      >
-        {nav1[title]} - {nav2[category]}
-      </div>
-      {navlist
-        // .filter(({ uuid: u }) => u != uuid)
-        .map((user) => (
-          <CardContact
-            to={`/${title}/${category}/`}
-            active={active}
-            key={user.uuid}
-            user={user}
+  const nav = useNavigate();
+  function onClick() {
+    nav(`/${title}/${category}/`);
+    setSelected();
+  }
+  if (title == 'room')
+    return (
+      <>
+        {uuid &&
+          selected &&
+          createPortal(
+            <header className="header2">
+              <ExitBtnMain onClick={onClick} />
+              {<CardRoom room={selected} />}
+            </header>,
+            document.querySelector('header.header2')
+          )}
+        {navlist.map((room) => (
+          <CardRoom
+            onClick={(r) => {
+              setSelected(r || room);
+            }}
+            title={title}
+            to={`/${title}/${category}/_/`}
+            active={room.idroom == idroom}
+            key={room.uuid}
+            room={room}
           />
         ))}
+      </>
+    );
+  // if (title)
+  return (
+    <>
+      {uuid &&
+        selected &&
+        createPortal(
+          <header className="header2">
+            <ExitBtnMain onClick={onClick} />
+            {<CardContact user={selected} />}
+          </header>,
+          document.querySelector('header.header2')
+        )}
+      {navlist.map((user) => (
+        <CardContact
+          to={`/${title}/${category}/`}
+          title={title}
+          category={category}
+          active={user.uuid == uuid2}
+          key={user.uuid}
+          user={user}
+          onClick={setSelected}
+        />
+      ))}
     </>
   );
 }

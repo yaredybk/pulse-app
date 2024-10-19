@@ -1,10 +1,10 @@
 // import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function ExitBtnMain() {
+export default function ExitBtnMain({onClick}) {
   // const [last, setlast] = useState();
   const nav = useNavigate();
-  function onClick() {
+  function onClick1() {
     const { pathname } = window.location;
     nav(pathname.replace('/a','').replace(/[^/]*.$/, '') || '/');
     // if (last == pathname) return window.location.replace('/a');
@@ -14,7 +14,7 @@ export default function ExitBtnMain() {
   }
   return (
     <button
-      onClick={onClick}
+      onClick={onClick||onClick1}
       type="button"
       style={{
         padding: '0px',
