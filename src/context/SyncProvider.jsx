@@ -4,51 +4,46 @@ import { Sync, User } from './context';
 var __timeo__ = 0;
 var __isConnecting__ = false;
 var __document_hidden__ = false;
+
 export default function SyncProvider(props) {
   const audioRef = useRef(new Audio('/api/audio/new-notification.mp3'));
   const ws = useRef(null);
   const [isConnected, setIsConnected] = useState();
   const [messageNav, setMessageNav] = useState('');
   const [messageMain, setMessageMain] = useState('');
+  const [unreadMess, setunreadMess] = useState([]);
   const { refresh } = useContext(User);
   function handleSocketMessage(e) {
     if (!e.data) return;
-    // if (typeof e.data !== 'string') return console.warn('data not a string');
     let d = e.data;
     if (!(d.startsWith('{') || d.startsWith('['))) return console.warn(d);
-    let { data, path ,profile} = JSON.parse(d);
+    let { data, path, profile } = JSON.parse(d);
     if (!(path && data)) return console.warn('no path or data');
     let pathes = path.replace(/^\//, '').split('/');
     let [root, type, category, touuid, fromuuid] = pathes;
-    // console.log([root, type, category, touuid, fromuuid]);
+    let data_ = {
+      data,
+      touuid,
+      fromuuid,
+      type,
+      category,
+      profile,
+      update: Date.now(),
+    };
     if (root == 'api') {
-      if (type == 'chat' || type == 'room') {
-        setMessageMain(() => {
-          return {
-            data,
-            touuid,
-            fromuuid,
-            type,
-            category,
-            profile,
-            update: Date.now(),
-          };
-        });
-        audioRef.current.currentTime = 0;
-        audioRef.current.play();
-        return;
-      }
+      if (!(type == 'chat' || type == 'room')) return;
+      const p = window.location.pathname.split('/');
+      if (
+        (p[2] == 'room' && (p[4] == touuid || p[5] == touuid)) ||
+        (p[2] == 'chat' && p[4] == fromuuid)
+      )
+        setMessageMain(data_);
+      else setunreadMess(data_);
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+      return;
     } else if (root == 'message') {
-      return setMessageNav(() => {
-        return {
-          data,
-          touuid,
-          fromuuid,
-          type,
-          category,
-          update: Date.now(),
-        };
-      });
+      return setMessageNav(data_);
     }
     // console.warn('unhandled sync');
     // console.log(root, type, category, touuid, fromuuid);
@@ -108,6 +103,7 @@ export default function SyncProvider(props) {
             startSync();
           }, 1000);
         }
+        navigator.setAppBadge(0);
       }
     }
     document.addEventListener('visibilitychange', onVisibilityChange);
@@ -154,10 +150,12 @@ export default function SyncProvider(props) {
     <Sync.Provider
       value={{
         isConnected,
+        unreadMess,
         messageNav,
         messageMain,
         setMessageMain,
         setMessageNav,
+        setunreadMess,
         send: ws.current?.send.bind(ws.current),
       }}
     >

@@ -83,3 +83,6 @@ h1.header {
     gap: 0.5rem;
   }
 }
+.dialog_header {
+  border-bottom: 8px double var(--orange4);
+}

@@ -7,7 +7,7 @@ import { createPortal } from 'react-dom';
 import ExitBtnMain from './ExitBtnMain';
 import { useNavigate, useParams } from 'react-router-dom';
 
-export default function ListNav2() {
+export default function ListNav2({ depth = 0 }) {
   const { title, category, uuid: uuid2, idroom } = useParams();
   const synContext = useContext(Sync);
   const { uuid, isLoading } = useContext(User);
@@ -84,7 +84,7 @@ export default function ListNav2() {
   if (title == 'room')
     return (
       <>
-        {uuid &&
+        {depth >2 &&
           selected &&
           createPortal(
             <header className="header2">
@@ -110,12 +110,12 @@ export default function ListNav2() {
   // if (title)
   return (
     <>
-      {uuid &&
+      {depth >2 &&
         selected &&
         createPortal(
           <header className="header2">
             <ExitBtnMain onClick={onClick} />
-            {<CardContact user={selected} />}
+            {<CardContact to={`/contacts/public/`} user={selected} />}
           </header>,
           document.querySelector('header.header2')
         )}

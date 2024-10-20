@@ -9,6 +9,7 @@ export default function ProfileSmall(props) {
   if (props.src)
     return (
       <Link
+        onClick={()=>props.onClick && props.onClick(props)}
         to={props.to}
         state={{ user: { uuid: props.uuid, profile: props.src } }}
       >

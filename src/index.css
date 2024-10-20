@@ -9,7 +9,7 @@
   --color-hero-dark: darkorange;
   --color-hero-black: rgb(107, 59, 0);
   --nav1-width: minmax(3rem, 8vw);
-  --nav2-width: minmax(10rem, 30vw);
+  --nav2-width: minmax(10rem, 20vw);
   --header-height: 2.5rem;
   --footer-height: 2.5rem;
 }

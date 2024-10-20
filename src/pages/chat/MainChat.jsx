@@ -36,11 +36,12 @@ export default function MainChat({ user: userin, type = 'chat' }) {
   /**
    * @param {{data, touuid, fromuuid, type, category}} param0
    */
-  function getUpdates({ data, fromuuid, touuid, profile }) {
-    console.log(fromuuid);
+  function getUpdates({ data, fromuuid, touuid, profile, type }) {
     // if there idroom touuid is idroom
     if (idroom) {
-      if (idroom != touuid) return;
+      if (idroom != touuid) {
+        return;
+      }
       return setmessages_({ content: data, uuid: fromuuid, profile });
     } else if (fromuuid != uuid) return;
     // console.warn('uuid missmatch');
@@ -97,6 +98,7 @@ export default function MainChat({ user: userin, type = 'chat' }) {
       console.warn('_sw.syncSend failed');
     }
   }
+  const profile_ = idroom ? null : user.profile;
   return (
     <>
       <main className="main chat">
@@ -116,9 +118,9 @@ export default function MainChat({ user: userin, type = 'chat' }) {
           >
             {me.uuid != ms.uuid && (
               <ProfileSmall
-                to={'/contacts/public/' + ms.uuid}
+                to={'/contacts/public/' + (user.uuid || ms.uuid)}
                 uuid={ms.uuid}
-                src={ms.profile}
+                src={profile_ || ms.profile}
               />
             )}
             <pre>{ms.content}</pre>

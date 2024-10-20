@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { User } from '../context/context';
 import ExitBtnMain from './ExitBtnMain';
 import RenderInfoFields from './RenderInfoFields';
+import { closeDialog } from '../utils/utils';
 
 /**
  * @param {Object} param0 parametres
@@ -28,7 +29,6 @@ export default function MainContact({ user: userin, online }) {
           if (!r?.ok) console.warn('no data');
           else
             r.json().then((d) => {
-              console.log(d);
               setUsr_(d);
             });
         })
@@ -39,7 +39,7 @@ export default function MainContact({ user: userin, online }) {
   return (
     <>
       <header className="header2 wide">
-        <ExitBtnMain />
+        <ExitBtnMain  />
       </header>
       <main className="main info contact nofooter bg_logo">
         {user.uuid ? (
@@ -73,9 +73,9 @@ export default function MainContact({ user: userin, online }) {
             </a>
           </center>
         )}
-        <dialog ref={modalRef} id="edit_form">
+        <dialog onClick={closeDialog} ref={modalRef} id="edit_form">
           <form onSubmit={onSubmit}>
-            <header>update {formData.name}</header>
+            <header className='dialog_header' >update {formData.name}</header>
             <label>
               {formData.name == 'profile' ? (
                 <input

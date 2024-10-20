@@ -22,10 +22,11 @@ function App() {
       {/* nav2 */}
       <Routes>
         <Route index element={null} />
-        <Route path=":title/" element={<Nav2 />} />
-        <Route path=":title/:category/" element={<Nav2 />} />
-        <Route path=":title/:category/:uuid/:idroom" element={<Nav2 />} />
-        <Route path=":title/:category/:uuid/*" element={<Nav2 />} />
+        <Route path=":title/" element={<Nav2 depth={1} />} />
+        <Route path=":title/:category/" element={<Nav2 depth={2} />} />
+        <Route path=":title/:category/:uuid/:idroom" element={
+          <Nav2 depth={4} />} />
+        <Route path=":title/:category/:uuid/*" element={<Nav2 depth={3} />} />
         <Route path="/*" element={<NothingHere />} />
       </Routes>
       {/* main */}
@@ -47,6 +48,10 @@ function App() {
         <Route
           path="/room/info/:uuid/:idroom"
           element={<ManageRoom />}
+        />
+        <Route
+          path="/room/:category/:idroom"
+          element={<MainChat type="room" />}
         />
         <Route
           path="/room/:category/:uuid/:idroom"

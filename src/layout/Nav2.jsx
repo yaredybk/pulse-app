@@ -2,12 +2,9 @@ import { Link, useParams } from 'react-router-dom';
 import ListNav2 from '../components/ListNav2';
 import { _customListNav2 } from '../preset';
 
-export default function Nav2() {
+export default function Nav2({depth=0}) {
   const { title, category, uuid } = useParams();
   const list1 = _customListNav2[title];
-  if (!title) {
-    return <header> . . . </header>;
-  }
   return (
     <nav className="nav2">
       <header>
@@ -25,7 +22,7 @@ export default function Nav2() {
           <span>{t2}</span>
         </Link>
       ))}
-      <ListNav2 />
+      <ListNav2 depth={depth} />
     </nav>
   );
 }

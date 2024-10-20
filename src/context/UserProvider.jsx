@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { _getMe } from '../utils/utils';
 import { User } from './context';
 
 export default function UserProvider(props) {
@@ -23,7 +22,7 @@ export default function UserProvider(props) {
   }
   async function refresh() {
     if (!window.navigator.onLine) {
-      setUserLocalSt({ online: false, isLoading: false });
+      setUserLocalSt({ ...user,online: false, isLoading: false });
       return Promise.reject('offline');
     }
     let data = {};

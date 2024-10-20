@@ -1,11 +1,11 @@
 import './manageroom.css';
 import '../../components/maincontact.css';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useNavigation, useParams } from 'react-router-dom';
-import ExitBtnMain from '../../components/ExitBtnMain';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import RenderInfoFields from '../../components/RenderInfoFields';
 import { User } from '../../context/context';
 import CardContact from '../../components/CardContact';
+import { closeDialog } from '../../utils/utils';
 
 export default function ManageRoom() {
   const modalRef = useRef(null);
@@ -58,9 +58,9 @@ export default function ManageRoom() {
           </div>
         </RenderInfoFields>
       </main>
-      <dialog ref={modalRef} id="edit_form">
+      <dialog onClick={closeDialog} ref={modalRef} id="edit_form">
         <form onSubmit={onSubmit}>
-          <header>update {formData.name}</header>
+          <header className='dialog_header'>update {formData.name}</header>
           <label>
             {formData.name == 'profile' ? (
               <input
@@ -107,7 +107,7 @@ export default function ManageRoom() {
           </button>
         </form>
       </dialog>
-      <dialog ref={membersRef} id="edit_members">
+      <dialog onClick={closeDialog} ref={membersRef} id="edit_members">
         <div>
           {contactsList.map((user, i) => (
             <CardContact
@@ -143,9 +143,6 @@ export default function ManageRoom() {
     </>
   );
   function setSelected(user, ind) {
-    console.warn(ind);
-    // console.warn(user);
-    console.log(contactsList);
     contactsList[ind].isSelected = !contactsList[ind].isSelected;
     setcontactsList([...contactsList]);
   }
@@ -199,7 +196,7 @@ export default function ManageRoom() {
             headers: { 'Content-Type': 'application/json' },
             body: data,
           };
-    const r1 = await fetch('/api/info/room/'+idroom, d);
+    const r1 = await fetch('/api/info/room/' + idroom, d);
     if (!r1 || !r1.ok || r1.status == 401) {
       setIsLoading(false);
       return alert('failed\n' + (r1.statusText || r1.status));
@@ -214,7 +211,7 @@ export default function ManageRoom() {
       return alert('no data from server');
     }
     setroomInfo((p) => {
-      return { ...p, ...r2.user };
+      return { ...p, ...r2.user, ...r2.room };
     });
     modalRef.current.close();
     setIsLoading(false);
@@ -249,7 +246,7 @@ export default function ManageRoom() {
     setroomInfo((p) => {
       return { ...p, ...r2.user };
     });
-    modalRef.current.close();
+    membersRef.current.close();
     setIsLoading(false);
   }
 }

@@ -31,3 +31,14 @@ export function scroll_bottom(selectors) {
     });
   }, 0);
 }
+
+/**
+ * closes the currentTarget dialog 
+ * if(e.target.id == e.currentTarget.id)
+ * @param {Event} e dialog click event
+ */
+export function closeDialog(e) {
+  // console.log(e);
+  if(e.target.id == e.currentTarget.id)
+    e.currentTarget.close();  
+}
