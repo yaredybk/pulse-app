@@ -59,15 +59,27 @@ h1.header {
   height: fit-content;
   max-height: 99vh;
   padding-bottom: 2rem;
-  h1{
+  h1 {
     border-bottom: 8px double var(--orange4);
     margin-block: 0.5rem 3rem;
     padding-bottom: 0.2rem;
   }
-  h2{
+  h2 {
     padding-inline: 5rem;
   }
   &::backdrop {
     background-color: rgba(31, 31, 31, 0.6);
+  }
+}
+
+.flex1 {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  & > * {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 }

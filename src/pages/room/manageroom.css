@@ -1,3 +1,45 @@
-main.manage.room{
-  h2{text-align: center;}
+main.manage.room {
+  h2 {
+    text-align: center;
+  }
+}
+#edit_members {
+  & > div {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  }
+  padding-top: 2rem;
+  padding-bottom: 0;
+  padding-inline: 5px;
+  width: min(95vw, 54rem);
+  gap: 3px 10px;
+  header{
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: black;
+    color: white;
+    padding: 0.2rem;
+    text-align: center;
+    /* margin: -1rem; */
+    margin-bottom: 2rem;
+  }
+  position: relative;
+  .buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-inline: -1rem;
+    background-color: var(--orange3);
+    bottom: 0;
+    padding: 5px;
+    grid-column: -1 / 1;
+    margin-inline: auto;
+
+  }
+  .card.contact{
+    width: 10rem;
+  }
 }

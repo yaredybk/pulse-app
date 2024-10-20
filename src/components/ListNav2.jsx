@@ -19,21 +19,28 @@ export default function ListNav2() {
         .then(async (res) => {
           if (res.ok) {
             let d = await res.json();
-            d ? setNavlist(d) : setNavlist([]);
+            if (d) {
+              setNavlist(d);
+              if (idroom) {
+                setSelected(d.find((e) => e.idroom == idroom));
+              } else if (uuid2) {
+                setSelected(d.find((e) => e.uuid == uuid2));
+              }
+            } else setNavlist([]);
           }
         })
         .catch(console.warn);
-    }else{
+    } else {
       setNavlist([]);
     }
   }
-  function onUpdate  ({
+  function onUpdate({
     // data,
     touuid,
     fromuuid,
     type,
     category: categoryin,
-  })  {
+  }) {
     if (type != title || category != categoryin)
       return console.warn('nav missmatch', type, category);
     if (title == 'room') {
@@ -59,8 +66,9 @@ export default function ListNav2() {
         }
       }
     }
-  };
+  }
   useEffect(() => {
+    if (!(idroom || uuid2)) setSelected();
     if (!isLoading)
       title && category ? fetchListNav(title, category) : setNavlist([]);
     return () => {};

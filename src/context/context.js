@@ -24,6 +24,7 @@ export const User = createContext({ isLoading: true, online: false });
  *              fromuuid:string,
  *              type:string,
  *              category:string,
+ *              profile:string,
  *              update:string},        
  *              setMessageMain:function,
  *              setMessageNav :function,

@@ -24,6 +24,7 @@
 [role='button'],
 button {
   cursor: pointer;
+  padding: 4px 8px;
 }
 a {
   text-decoration: none;

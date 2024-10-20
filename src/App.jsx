@@ -24,6 +24,7 @@ function App() {
         <Route index element={null} />
         <Route path=":title/" element={<Nav2 />} />
         <Route path=":title/:category/" element={<Nav2 />} />
+        <Route path=":title/:category/:uuid/:idroom" element={<Nav2 />} />
         <Route path=":title/:category/:uuid/*" element={<Nav2 />} />
         <Route path="/*" element={<NothingHere />} />
       </Routes>

@@ -16,7 +16,7 @@ export default function SyncProvider(props) {
     // if (typeof e.data !== 'string') return console.warn('data not a string');
     let d = e.data;
     if (!(d.startsWith('{') || d.startsWith('['))) return console.warn(d);
-    let { data, path } = JSON.parse(d);
+    let { data, path ,profile} = JSON.parse(d);
     if (!(path && data)) return console.warn('no path or data');
     let pathes = path.replace(/^\//, '').split('/');
     let [root, type, category, touuid, fromuuid] = pathes;
@@ -30,6 +30,7 @@ export default function SyncProvider(props) {
             fromuuid,
             type,
             category,
+            profile,
             update: Date.now(),
           };
         });

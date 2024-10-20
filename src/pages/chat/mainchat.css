@@ -10,6 +10,7 @@
 
   & div.pre {
     position: relative;
+    border-radius: 10px;
     & pre{
       display: inline-block;
       white-space: pre-wrap;

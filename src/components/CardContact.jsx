@@ -13,6 +13,7 @@ export default function CardContact({
   to = '/public/',
   active,
   onClick = null,
+  btn = false,
 }) {
   const { state } = useLocation();
   if (state?.user && !user.name) user = state.user;
@@ -34,16 +35,29 @@ export default function CardContact({
     return () => {};
   }, [user.uuid]);
   const user_ = user.name ? user : user3;
+  function Component({ children, ...props }) {
+    return btn ? (
+      <button {...props}>{children}</button>
+    ) : (
+      <Link {...props}>{children}</Link>
+    );
+  }
   return (
-    <Link
+    <Component
       to={to + user_.uuid}
-      onClick={() => onclick &&onClick(user_)}
+      onClick={() => {
+        onClick && onClick(user_);
+      }}
       state={{ user: user_ }}
-      className={active == user_.uuid ? `card contact active` : `card contact`}
+      className={active == user_.uuid || user_.isSelected? `card contact active` : `card contact`}
     >
       <img src={user_.profile} alt="" />
       <span>{user_.name || user_.uuid}</span>
-      <span className={user_.active ? 'userisonline' : 'userisoffline'}></span>
-    </Link>
+      <span
+        className={
+          user_.active  ? 'userisonline' : 'userisoffline'
+        }
+      ></span>
+    </Component>
   );
 }

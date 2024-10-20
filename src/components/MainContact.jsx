@@ -1,5 +1,5 @@
 import './maincontact.css';
-import { useContext, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { User } from '../context/context';
 import ExitBtnMain from './ExitBtnMain';
@@ -12,7 +12,8 @@ import RenderInfoFields from './RenderInfoFields';
 export default function MainContact({ user: userin, online }) {
   const { uuid, setUser, ...moreUserInfo } = useContext(User);
   const { state } = useLocation();
-  const user = userin || state?.user || {};
+  const [usr_, setUsr_] = useState();
+  const user = usr_|| userin || state?.user || {};
   const modalRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({ name: '', value: '' });
@@ -20,7 +21,21 @@ export default function MainContact({ user: userin, online }) {
     (n) => n == formData.name
   );
   const canEdit = uuid == user.uuid;
-  if (moreUserInfo.isLoading) return <main>Loading user ... </main>;
+  useEffect(() => {
+    if (!user.name)
+      fetch(`/api/info/user/${user.uuid}`)
+        .then((r) => {
+          if (!r?.ok) console.warn('no data');
+          else
+            r.json().then((d) => {
+              console.log(d);
+              setUsr_(d);
+            });
+        })
+        .catch(console.warn);
+  }, [user.uuid])
+  
+  if (moreUserInfo.isLoading ) return <main>Loading user ... </main>;
   return (
     <>
       <header className="header2 wide">

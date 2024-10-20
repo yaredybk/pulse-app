@@ -36,14 +36,15 @@ export default function MainChat({ user: userin, type = 'chat' }) {
   /**
    * @param {{data, touuid, fromuuid, type, category}} param0
    */
-  function getUpdates({ data, fromuuid, touuid }) {
+  function getUpdates({ data, fromuuid, touuid, profile }) {
+    console.log(fromuuid);
     // if there idroom touuid is idroom
     if (idroom) {
       if (idroom != touuid) return;
-      return setmessages_({ content: data, uuid: fromuuid });
+      return setmessages_({ content: data, uuid: fromuuid, profile });
     } else if (fromuuid != uuid) return;
     // console.warn('uuid missmatch');
-    setmessages_({ content: data, uuid: user.uuid });
+    setmessages_({ content: data, uuid: user.uuid, profile });
   }
   async function getMessages() {
     const url = idroom
@@ -113,7 +114,13 @@ export default function MainChat({ user: userin, type = 'chat' }) {
             }
             key={ind}
           >
-            {me.uuid != ms.uuid && <ProfileSmall src={ms.profile} />}
+            {me.uuid != ms.uuid && (
+              <ProfileSmall
+                to={'/contacts/public/' + ms.uuid}
+                uuid={ms.uuid}
+                src={ms.profile}
+              />
+            )}
             <pre>{ms.content}</pre>
           </div>
         ))}
