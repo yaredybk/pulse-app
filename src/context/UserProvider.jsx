@@ -34,11 +34,7 @@ export default function UserProvider(props) {
         res.type == 'opaqueredirect'
       ) {
         setUserLocalSt({ isLoading: false });
-        console.log(loginRef.current);
-
         loginRef.current.showModal();
-        // if (window.location.pathname != '/a/profile/me') {
-        //   window.location.assign('/a/profile/me');
         // }
         return Promise.reject(401);
       }

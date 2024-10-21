@@ -50,17 +50,19 @@ export default function ManageRoom() {
               >
                 Chat in {room.name}
               </Link>
-              <button onClick={() => openModal('add_members')} type="button">
-                <span className="material-symbols-outlined">person_add</span>
-                add members
-              </button>
+              {canEdit && (
+                <button onClick={() => openModal('add_members')} type="button">
+                  <span className="material-symbols-outlined">person_add</span>
+                  add members
+                </button>
+              )}
             </span>
           </div>
         </RenderInfoFields>
       </main>
       <dialog onClick={closeDialog} ref={modalRef} id="edit_form">
         <form onSubmit={onSubmit}>
-          <header className='dialog_header'>update {formData.name}</header>
+          <header className="dialog_header">update {formData.name}</header>
           <label>
             {formData.name == 'profile' ? (
               <input

@@ -21,24 +21,24 @@ export async function _getMe() {
 /**
  * scrolles the given element to bottom
  * @param {string} selectors valid dom selector string
+ * @param {'auto'|'instant'|'smooth'} behavior valid dom selector string
  */
-export function scroll_bottom(selectors) {
+export function scroll_bottom(selectors, behavior = 'smooth') {
   setTimeout(() => {
     const _element = document.querySelector(selectors);
     _element.scrollTo({
       top: _element.scrollHeight,
-      behavior: 'smooth',
+      behavior,
     });
   }, 0);
 }
 
 /**
- * closes the currentTarget dialog 
+ * closes the currentTarget dialog
  * if(e.target.id == e.currentTarget.id)
  * @param {Event} e dialog click event
  */
 export function closeDialog(e) {
   // console.log(e);
-  if(e.target.id == e.currentTarget.id)
-    e.currentTarget.close();  
+  if (e.target.id == e.currentTarget.id) e.currentTarget.close();
 }

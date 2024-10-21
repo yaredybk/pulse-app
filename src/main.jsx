@@ -24,35 +24,7 @@ createRoot(document.getElementById('root')).render(
           </Routes>
           {/* header2 */}
           <header className="header2"></header>
-          {/* <Routes>
-        <Route
-          index
-          element={
-            userInfo.uuid ? (
-              <header className="header2 wide">
-                <CardContact user={userInfo} />
-              </header>
-            ) : (
-              <header className="header2 wide">
-                <p>
-                  you need to{' '}
-                  <Link
-                    style={{ paddingBlock: '0' }}
-                    to="/me"
-                    className=" btn hero"
-                  >
-                    login
-                  </Link>
-                </p>
-              </header>
-            )
-          }
-        />
-        <Route path="/:title" element={<Header2 />} />
-        <Route path=":title/:category/:uuid/" element={<Header2 />} />
-        <Route path=":title/:category/:uuid/:idroom/*" element={<Header2 />} />
-        <Route path="/*" element={<header>.</header>} />
-      </Routes> */}
+
           <Nav1 />
           <App />
           <UnreadMS />

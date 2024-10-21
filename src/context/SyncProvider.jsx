@@ -6,7 +6,7 @@ var __isConnecting__ = false;
 var __document_hidden__ = false;
 
 export default function SyncProvider(props) {
-  const audioRef = useRef(new Audio('/api/audio/new-notification.mp3'));
+  const audioRef = useRef(null);
   const ws = useRef(null);
   const [isConnected, setIsConnected] = useState();
   const [messageNav, setMessageNav] = useState('');
@@ -16,7 +16,7 @@ export default function SyncProvider(props) {
   function handleSocketMessage(e) {
     if (!e.data) return;
     let d = e.data;
-    if (!(d.startsWith('{') || d.startsWith('['))) return console.warn(d);
+    if (!(d.startsWith('{') || d.startsWith('['))) return;
     let { data, path, profile } = JSON.parse(d);
     if (!(path && data)) return console.warn('no path or data');
     let pathes = path.replace(/^\//, '').split('/');
@@ -54,7 +54,8 @@ export default function SyncProvider(props) {
    * @param {number} [timeoutrange=5000] amout of delay to reconnect
    */
   function startSync(timeoutrange = 5000) {
-    if (__isConnecting__) return console.warn('__isConnecting__');
+    if (document.hidden) return;
+    if (__isConnecting__) return;
     __isConnecting__ = true;
     refresh()
       .then(() => {
@@ -62,6 +63,8 @@ export default function SyncProvider(props) {
         if (process.env.NODE_ENV == 'development')
           wsLink = 'ws://' + new URL(window.location).hostname + ':5000/ws';
         const socket = new WebSocket(wsLink);
+        if (!audioRef.current)
+          audioRef.current = new Audio('/api/audio/new-notification.mp3');
         socket.addEventListener('message', (e) => handleSocketMessage(e));
         socket.addEventListener('open', () => {
           socket.send('hi there');
@@ -90,10 +93,10 @@ export default function SyncProvider(props) {
       // console.warn('onVisibilityChange', document.hidden);
       if (document.hidden) {
         __document_hidden__ = true;
-        if (ws.current) {
-          ws.current.close();
-          setIsConnected(() => false);
-        }
+        // if (ws.current) {
+        //   ws.current.close();
+        //   setIsConnected(() => false);
+        // }
       } else {
         __document_hidden__ = false;
         if (!ws.current) startSync();

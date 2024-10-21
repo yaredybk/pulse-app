@@ -23,9 +23,10 @@ export default function NewRoom() {
       const { room } = await r.json();
 
       if (!room) return alert('error');
-      
+
       navigate(`/room/private/_/${room.idroom}`, {
         state: { room: { name: roomInfo.name, bio: roomInfo.bio, ...room } },
+        replace: true,
       });
       return;
     }
